@@ -8,6 +8,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Check SSH Connectivity
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ${{secrets.SSH_KEY}} -v ${{secrets.SSH_USERNAME}}@${{secrets.SSH_HOST}} "echo SSH Connection Successful"
       - name: Deploy vires api app
         uses: appleboy/ssh-action@v1.0.3
         with: 
