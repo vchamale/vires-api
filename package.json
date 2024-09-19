@@ -7,7 +7,7 @@
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
     "build": "tsc",
-    "build:pro": "docker build -t vires-api . && docker run -p 3000:3000 && docker update --restart unless-stopped $(docker ps -aqf name=^vires-api$)",
+    "build:pro": "docker build -t vires-api . && docker run -d -p 3000:3000 --name vires-api vires-api && docker update --restart unless-stopped $(docker ps -aqf name=^vires-api$)",
     "rebuild:pro": "docker stop $(docker ps -aqf name=^vires-api$) && docker rm $(docker ps -aqf name=^vires-api$) && docker rmi vires-api -f && docker build -t vires-api . && docker run -p 3000:3000 && docker update --restart unless-stopped $(docker ps -aqf name=^vires-api$)"
   },
   "keywords": [],
