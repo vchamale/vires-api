@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
-import ClientService from '@services/clientService';
+import ClientService from '../services/clientService';
 
 class ClientController {
     async createClient(req: Request, res: Response) {
         try {
             const newClient = await ClientService.create(req.body);
             return res.status(201).json(newClient);
-        } catch (error) {
+        } catch (error: any) {
             return res.status(400).json({ message: error.message });
         }
     }
@@ -18,7 +18,7 @@ class ClientController {
                 return res.status(404).json({ message: 'Client not found' });
             }
             return res.status(200).json(client);
-        } catch (error) {
+        } catch (error: any) {
             return res.status(500).json({ message: error.message });
         }
     }
@@ -30,7 +30,7 @@ class ClientController {
                 return res.status(404).json({ message: 'Client not found' });
             }
             return res.status(200).json(updatedClient);
-        } catch (error) {
+        } catch (error: any) {
             return res.status(400).json({ message: error.message });
         }
     }
@@ -42,7 +42,7 @@ class ClientController {
                 return res.status(404).json({ message: 'Client not found' });
             }
             return res.status(204).json();
-        } catch (error) {
+        } catch (error: any) {
             return res.status(500).json({ message: error.message });
         }
     }

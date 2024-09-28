@@ -1,14 +1,12 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize from '@config/database';
+import sequelize from '../config/database';
 
-// Definimos los atributos de Size
 interface SizeAttributes {
     size_id: number;
     description: string;
     feet: number;
 }
 
-// Definimos los atributos opcionales para la creación de un Size
 interface SizeCreationAttributes extends Optional<SizeAttributes, 'size_id'> {}
 
 class Size extends Model<SizeAttributes, SizeCreationAttributes> implements SizeAttributes {
@@ -17,7 +15,6 @@ class Size extends Model<SizeAttributes, SizeCreationAttributes> implements Size
     public feet!: number;
 }
 
-// Inicializamos el modelo Size
 Size.init({
     size_id: {
         type: DataTypes.INTEGER,

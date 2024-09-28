@@ -1,14 +1,13 @@
 import { DataTypes, Model } from 'sequelize';
-import sequelize from '@config/database';
-import Role from '@models/Role';
-import Permission from '@models/Permission';
+import sequelize from '../config/database';
+import Role from './Role';
+import Permission from './Permission';
 
 class RolePermission extends Model {
     public role_id!: number;
     public permission_id!: number;
 }
 
-// Inicializamos el modelo RolePermission
 RolePermission.init({
     role_id: {
         type: DataTypes.INTEGER,
@@ -27,7 +26,6 @@ RolePermission.init({
     timestamps: false
 });
 
-// Relaciones muchos a muchos
 Role.belongsToMany(Permission, { through: RolePermission, foreignKey: 'role_id' });
 Permission.belongsToMany(Role, { through: RolePermission, foreignKey: 'permission_id' });
 

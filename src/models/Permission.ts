@@ -1,13 +1,11 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize from '@config/database';
+import sequelize from '../config/database';
 
-// Definimos los atributos de Permission
 interface PermissionAttributes {
     permission_id: number;
     description: string;
 }
 
-// Definimos los atributos opcionales para la creación de un Permission
 interface PermissionCreationAttributes extends Optional<PermissionAttributes, 'permission_id'> {}
 
 class Permission extends Model<PermissionAttributes, PermissionCreationAttributes> implements PermissionAttributes {
@@ -15,7 +13,6 @@ class Permission extends Model<PermissionAttributes, PermissionCreationAttribute
     public description!: string;
 }
 
-// Inicializamos el modelo Permission
 Permission.init({
     permission_id: {
         type: DataTypes.INTEGER,

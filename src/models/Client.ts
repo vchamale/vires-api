@@ -1,8 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize from '@config/database';
-import Tenant from '@models/Tenant';
+import sequelize from '../config/database';
+import Tenant from './Tenant';
 
-// Definimos los atributos de Client
 interface ClientAttributes {
     client_id: number;
     tenant_id: number;
@@ -15,7 +14,6 @@ interface ClientAttributes {
     status: boolean;
 }
 
-// Definimos los atributos opcionales para la creación de un Client
 interface ClientCreationAttributes extends Optional<ClientAttributes, 'client_id'> {}
 
 class Client extends Model<ClientAttributes, ClientCreationAttributes> implements ClientAttributes {
@@ -30,7 +28,6 @@ class Client extends Model<ClientAttributes, ClientCreationAttributes> implement
     public status!: boolean;
 }
 
-// Inicializamos el modelo Client
 Client.init({
     client_id: {
         type: DataTypes.INTEGER,

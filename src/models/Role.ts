@@ -1,13 +1,11 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize from '@config/database';
+import sequelize from '../config/database';
 
-// Definimos los atributos del Role
 interface RoleAttributes {
     role_id: number;
     name: string;
 }
 
-// Definimos los atributos opcionales para la creación de un Role
 interface RoleCreationAttributes extends Optional<RoleAttributes, 'role_id'> {}
 
 class Role extends Model<RoleAttributes, RoleCreationAttributes> implements RoleAttributes {
@@ -15,7 +13,6 @@ class Role extends Model<RoleAttributes, RoleCreationAttributes> implements Role
     public name!: string;
 }
 
-// Inicializamos el modelo Role
 Role.init({
     role_id: {
         type: DataTypes.INTEGER,

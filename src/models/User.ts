@@ -1,10 +1,9 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize from '@config/database';
-import Tenant from '@models/Tenant';
-import Role from '@models/Role';
-import Truck from '@models/Truck';
+import sequelize from '../config/database';
+import Tenant from './Tenant';
+import Role from './Role';
+import Truck from './Truck';
 
-// Definimos los atributos de User
 interface UserAttributes {
     user_id: number;
     tenant_id: number;
@@ -19,7 +18,6 @@ interface UserAttributes {
     status: boolean;
 }
 
-// Definimos los atributos opcionales para la creación de un User
 interface UserCreationAttributes extends Optional<UserAttributes, 'user_id'> {}
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
@@ -36,7 +34,6 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
     public status!: boolean;
 }
 
-// Inicializamos el modelo User
 User.init({
     user_id: {
         type: DataTypes.INTEGER,

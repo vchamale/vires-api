@@ -4,10 +4,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const sequelize = new Sequelize(
-    process.env.DB_NAME as string,
-    process.env.DB_USER as string, 
-    process.env.DB_PASSWORD as string, {
-        host: process.env.DB_HOST,
+    process.env.PG_DATABASE as string,
+    process.env.PG_USER as string, 
+    process.env.PG_PASSWORD as string, {
+        host: process.env.PG_HOST,
         dialect: 'postgres',
     }
 );

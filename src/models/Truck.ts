@@ -1,9 +1,8 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize from '@config/database';
-import Tenant from '@models/Tenant';
-import TruckModel from '@models/Model';
+import sequelize from '../config/database';
+import Tenant from './Tenant';
+import TruckModel from './Model';
 
-// Definimos los atributos de Truck
 interface TruckAttributes {
     truck_id: number;
     tenant_id: number;
@@ -14,7 +13,6 @@ interface TruckAttributes {
     status: boolean;
 }
 
-// Definimos los atributos opcionales para la creación de un Truck
 interface TruckCreationAttributes extends Optional<TruckAttributes, 'truck_id'> {}
 
 class Truck extends Model<TruckAttributes, TruckCreationAttributes> implements TruckAttributes {
@@ -27,7 +25,6 @@ class Truck extends Model<TruckAttributes, TruckCreationAttributes> implements T
     public status!: boolean;
 }
 
-// Inicializamos el modelo Truck
 Truck.init({
     truck_id: {
         type: DataTypes.INTEGER,

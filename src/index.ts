@@ -5,10 +5,11 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './config/swagger';
 
 // Routes
-import healthRoutes from '@routes/healthRoutes';
-import userRoutes from '@routes/userRoutes';
-import roleRoutes from '@routes/roleRoutes';
-import clientRoutes from '@routes/clientRoutes';
+import healthRoutes from './routes/healthRoutes';
+import userRoutes from './routes/userRoutes';
+import roleRoutes from './routes/roleRoutes';
+import clientRoutes from './routes/clientRoutes';
+import shipmentRoutes from './routes/shipmentRoutes';
 
 
 dotenv.config();
@@ -27,6 +28,7 @@ app.use('/api', healthRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/clients', clientRoutes);
+app.use('/api/shipments', shipmentRoutes);
 
 // Server initialization
 sequelize.sync({ force: false }).then(() => {

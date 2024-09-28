@@ -1,7 +1,7 @@
 import express from 'express';
-import ClientController from '@controllers/clientController';
-import authMiddleware from '@middlewares/authMiddleware';
-import roleMiddleware from '@middlewares/roleMiddleware';
+import ClientController from '../controllers/clientController';
+import authMiddleware from '../middlewares/authMiddleware';
+import roleMiddleware from '../middlewares/roleMiddleware';
 
 const router = express.Router();
 

@@ -1,8 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize from '@config/database';
-import TenantStatus from '@models/TenantStatus';
+import sequelize from '../config/database';
+import TenantStatus from './TenantStatus';
 
-// Definimos los atributos del Tenant
 interface TenantAttributes {
     tenant_id: number;
     subscription_id?: number;
@@ -12,7 +11,6 @@ interface TenantAttributes {
     payment_id?: number;
 }
 
-// Definimos los atributos opcionales para la creación de un Tenant
 interface TenantCreationAttributes extends Optional<TenantAttributes, 'tenant_id'> {}
 
 class Tenant extends Model<TenantAttributes, TenantCreationAttributes> implements TenantAttributes {
@@ -24,7 +22,6 @@ class Tenant extends Model<TenantAttributes, TenantCreationAttributes> implement
     public payment_id?: number;
 }
 
-// Inicializamos el modelo Tenant
 Tenant.init({
     tenant_id: {
         type: DataTypes.INTEGER,
