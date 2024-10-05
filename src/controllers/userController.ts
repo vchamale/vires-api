@@ -16,6 +16,7 @@ class UserController {
         try {
             const { email, password } = req.body;
             const tokenData = await AuthService.login(email, password);
+            console.log('tokenData ', tokenData)
             return res.status(200).json(tokenData);
         } catch (error: any) {
             return res.status(400).json({ message: error.message });

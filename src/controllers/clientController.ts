@@ -23,6 +23,15 @@ class ClientController {
         }
     }
 
+    async getAllClients(req: Request, res: Response) {
+        try {
+          const clients = await ClientService.getAllClients();
+          res.status(200).json(clients);
+        } catch (error: any) {
+          res.status(500).json({ message: error.message });
+        }
+      }
+
     async updateClient(req: Request, res: Response) {
         try {
             const updatedClient = await ClientService.update(parseInt(req.params.id), req.body);
