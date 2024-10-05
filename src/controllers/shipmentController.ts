@@ -4,9 +4,11 @@ import ShipmentService from '../services/shipmentService';
 class ShipmentController {
     async create(req: Request, res: Response): Promise<Response> {
         try {
+            console.log('req.body ', req.body)
             const newShipment = await ShipmentService.create(req.body);
             return res.status(201).json(newShipment);
         } catch (error: any) {
+            console.log('error ', error)
             return res.status(400).json({ message: error.message });
         }
     }

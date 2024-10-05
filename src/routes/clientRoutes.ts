@@ -6,7 +6,9 @@ import roleMiddleware from '../middlewares/roleMiddleware';
 const router = express.Router();
 
 router.post('/', authMiddleware, roleMiddleware('Admin'), ClientController.createClient);
-router.get('/:id', authMiddleware, ClientController.getClient);
+// router.get('/:id', authMiddleware, ClientController.getClient);
+router.get('/:id', ClientController.getClient);
+router.get('/', ClientController.getAllClients);
 router.put('/:id', authMiddleware, roleMiddleware('Admin'), ClientController.updateClient);
 router.delete('/:id', authMiddleware, roleMiddleware('Admin'), ClientController.deleteClient);
 
