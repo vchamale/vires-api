@@ -3,30 +3,30 @@ import sequelize from '../config/database';
 import Tenant from './Tenant';
 
 interface OriginAttributes {
-    origin_id: number;
-    tenant_id: number;
+    originId: number;
+    tenantId: number;
     name: string;
     address: string;
 }
 
-interface OriginCreationAttributes extends Optional<OriginAttributes, 'origin_id'> {}
+interface OriginCreationAttributes extends Optional<OriginAttributes, 'originId'> {}
 
 class Origin extends Model<OriginAttributes, OriginCreationAttributes> implements OriginAttributes {
-    public origin_id!: number;
-    public tenant_id!: number;
+    public originId!: number;
+    public tenantId!: number;
     public name!: string;
     public address!: string;
 }
 
 Origin.init({
-    origin_id: {
+    originId: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    tenant_id: {
+    tenantId: {
         type: DataTypes.INTEGER,
-        references: { model: Tenant, key: 'tenant_id' }
+        references: { model: Tenant, key: 'tenantId' }
     },
     name: {
         type: DataTypes.STRING(50),
@@ -40,9 +40,10 @@ Origin.init({
     sequelize,
     modelName: 'Origin',
     tableName: 'origin',
+    underscored: true,
     timestamps: false
 });
 
-Origin.belongsTo(Tenant, { foreignKey: 'tenant_id' });
+Origin.belongsTo(Tenant, { as: 'tenant', foreignKey: 'tenantId' });
 
 export default Origin;

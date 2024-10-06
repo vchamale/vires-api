@@ -9,7 +9,7 @@ class UserService {
     }
 
     async getById(userId: number) {
-        return await User.findByPk(userId);
+        return await User.findByPk(userId, { attributes: { exclude: ['password'] } });
     }
 }
 

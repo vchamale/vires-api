@@ -2,21 +2,21 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
 
 interface SizeAttributes {
-    size_id: number;
+    sizeId: number;
     description: string;
     feet: number;
 }
 
-interface SizeCreationAttributes extends Optional<SizeAttributes, 'size_id'> {}
+interface SizeCreationAttributes extends Optional<SizeAttributes, 'sizeId'> {}
 
 class Size extends Model<SizeAttributes, SizeCreationAttributes> implements SizeAttributes {
-    public size_id!: number;
+    public sizeId!: number;
     public description!: string;
     public feet!: number;
 }
 
 Size.init({
-    size_id: {
+    sizeId: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
@@ -33,6 +33,7 @@ Size.init({
     sequelize,
     modelName: 'Size',
     tableName: 'size',
+    underscored: true,
     timestamps: false
 });
 

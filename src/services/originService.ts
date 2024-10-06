@@ -10,7 +10,7 @@ class OriginService {
   }
 
   async createOrigin(originData: {
-    tenant_id: number;
+    tenantId: number;
     name: string;
     address: string;
   }) {
@@ -18,7 +18,7 @@ class OriginService {
   }
 
   async updateOrigin(id: number, originData: Partial<{
-    tenant_id: number;
+    tenantId: number;
     name: string;
     address: string;
   }>) {

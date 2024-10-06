@@ -3,28 +3,28 @@ import sequelize from '../config/database';
 import Make from './Make';
 
 interface ModelAttributes {
-    model_id: number;
-    make_id: number;
+    modelId: number;
+    makeId: number;
     name: string;
 }
 
-interface ModelCreationAttributes extends Optional<ModelAttributes, 'model_id'> {}
+interface ModelCreationAttributes extends Optional<ModelAttributes, 'modelId'> {}
 
 class TruckModel extends Model<ModelAttributes, ModelCreationAttributes> implements ModelAttributes {
-    public model_id!: number;
-    public make_id!: number;
+    public modelId!: number;
+    public makeId!: number;
     public name!: string;
 }
 
 TruckModel.init({
-    model_id: {
+    modelId: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    make_id: {
+    makeId: {
         type: DataTypes.INTEGER,
-        references: { model: Make, key: 'make_id' }
+        references: { model: Make, key: 'makeId' }
     },
     name: {
         type: DataTypes.STRING(25),
@@ -34,9 +34,10 @@ TruckModel.init({
     sequelize,
     modelName: 'Model',
     tableName: 'model',
+    underscored: true,
     timestamps: false
 });
 
-TruckModel.belongsTo(Make, { foreignKey: 'make_id' });
+TruckModel.belongsTo(Make, { as: 'make', foreignKey: 'makeId' });
 
 export default TruckModel;

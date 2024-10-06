@@ -4,36 +4,36 @@ import Tenant from './Tenant';
 import Size from './Size';
 
 interface ContainerAttributes {
-    container_id: number;
-    tenant_id: number;
-    size_id: number;
-    container_number: string;
+    containerId: number;
+    tenantId: number;
+    sizeId: number;
+    containerNumber: string;
 }
 
-interface ContainerCreationAttributes extends Optional<ContainerAttributes, 'container_id'> {}
+interface ContainerCreationAttributes extends Optional<ContainerAttributes, 'containerId'> {}
 
 class Container extends Model<ContainerAttributes, ContainerCreationAttributes> implements ContainerAttributes {
-    public container_id!: number;
-    public tenant_id!: number;
-    public size_id!: number;
-    public container_number!: string;
+    public containerId!: number;
+    public tenantId!: number;
+    public sizeId!: number;
+    public containerNumber!: string;
 }
 
 Container.init({
-    container_id: {
+    containerId: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    tenant_id: {
+    tenantId: {
         type: DataTypes.INTEGER,
-        references: { model: Tenant, key: 'tenant_id' }
+        references: { model: Tenant, key: 'tenantId' }
     },
-    size_id: {
+    sizeId: {
         type: DataTypes.INTEGER,
-        references: { model: Size, key: 'size_id' }
+        references: { model: Size, key: 'sizeId' }
     },
-    container_number: {
+    containerNumber: {
         type: DataTypes.STRING(50),
         allowNull: false
     }
@@ -41,10 +41,11 @@ Container.init({
     sequelize,
     modelName: 'Container',
     tableName: 'container',
+    underscored: true,
     timestamps: false
 });
 
-Container.belongsTo(Tenant, { foreignKey: 'tenant_id' });
-Container.belongsTo(Size, { foreignKey: 'size_id' });
+Container.belongsTo(Tenant, { as: 'tenant', foreignKey: 'tenantId' });
+Container.belongsTo(Size, { as: 'size', foreignKey: 'sizeId' });
 
 export default Container;

@@ -5,52 +5,59 @@ import Role from './Role';
 import Truck from './Truck';
 
 interface UserAttributes {
-    user_id: number;
-    tenant_id: number;
-    role_id: number;
-    truck_id?: number;
+    userId: number;
+    tenantId: number;
+    roleId: number;
+    truckId?: number;
     email: string;
-    password: string;
+    password?: string;
     names: string;
-    last_names: string;
+    lastNames: string;
     telephone: string;
     license: string;
     status: boolean;
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, 'user_id'> {}
+interface UserCreationAttributes extends Optional<UserAttributes, 'userId'> {}
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
-    public user_id!: number;
-    public tenant_id!: number;
-    public role_id!: number;
-    public truck_id?: number;
+    public userId!: number;
+    public tenantId!: number;
+    public roleId!: number;
+    public truckId?: number;
     public email!: string;
-    public password!: string;
+    public password?: string;
     public names!: string;
-    public last_names!: string;
+    public lastNames!: string;
     public telephone!: string;
     public license!: string;
     public status!: boolean;
+
+    toJSON() {
+        const values = Object.assign({}, this.get());
+        console.log('values ', values)
+        delete values.password;
+        return values;
+      }
 }
 
 User.init({
-    user_id: {
+    userId: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    tenant_id: {
+    tenantId: {
         type: DataTypes.INTEGER,
-        references: { model: Tenant, key: 'tenant_id' }
+        references: { model: Tenant, key: 'tenantId' }
     },
-    role_id: {
+    roleId: {
         type: DataTypes.INTEGER,
-        references: { model: Role, key: 'role_id' }
+        references: { model: Role, key: 'roleId' }
     },
-    truck_id: {
+    truckId: {
         type: DataTypes.INTEGER,
-        references: { model: Truck, key: 'truck_id' },
+        references: { model: Truck, key: 'truckId' },
         allowNull: true
     },
     email: {
@@ -66,7 +73,7 @@ User.init({
         type: DataTypes.STRING(50),
         allowNull: false
     },
-    last_names: {
+    lastNames: {
         type: DataTypes.STRING(50),
         allowNull: false
     },
@@ -80,11 +87,12 @@ User.init({
     sequelize,
     modelName: 'User',
     tableName: 'app_user',
+    underscored: true,
     timestamps: false
 });
 
-User.belongsTo(Tenant, { foreignKey: 'tenant_id' });
-User.belongsTo(Role, { foreignKey: 'role_id' });
-User.belongsTo(Truck, { foreignKey: 'truck_id' });
+User.belongsTo(Tenant, { as: 'tenant', foreignKey: 'tenantId' });
+User.belongsTo(Role, { as: 'role', foreignKey: 'roleId' });
+User.belongsTo(Truck, { as: 'truck',foreignKey: 'truckId' });
 
 export default User;

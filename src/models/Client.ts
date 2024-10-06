@@ -3,40 +3,40 @@ import sequelize from '../config/database';
 import Tenant from './Tenant';
 
 interface ClientAttributes {
-    client_id: number;
-    tenant_id: number;
+    clientId: number;
+    tenantId: number;
     nit: string;
     name: string;
     address: string;
-    contact_name: string;
+    contactName: string;
     telephone: string;
     email: string;
     status: boolean;
 }
 
-interface ClientCreationAttributes extends Optional<ClientAttributes, 'client_id'> {}
+interface ClientCreationAttributes extends Optional<ClientAttributes, 'clientId'> {}
 
 class Client extends Model<ClientAttributes, ClientCreationAttributes> implements ClientAttributes {
-    public client_id!: number;
-    public tenant_id!: number;
+    public clientId!: number;
+    public tenantId!: number;
     public nit!: string;
     public name!: string;
     public address!: string;
-    public contact_name!: string;
+    public contactName!: string;
     public telephone!: string;
     public email!: string;
     public status!: boolean;
 }
 
 Client.init({
-    client_id: {
+    clientId: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    tenant_id: {
+    tenantId: {
         type: DataTypes.INTEGER,
-        references: { model: Tenant, key: 'tenant_id' }
+        references: { model: Tenant, key: 'tenantId' }
     },
     nit: {
         type: DataTypes.STRING(15),
@@ -47,7 +47,7 @@ Client.init({
         allowNull: false
     },
     address: DataTypes.STRING(255),
-    contact_name: {
+    contactName: {
         type: DataTypes.STRING(50),
         allowNull: false
     },
@@ -67,9 +67,10 @@ Client.init({
     sequelize,
     modelName: 'Client',
     tableName: 'client',
+    underscored: true,
     timestamps: false
 });
 
-Client.belongsTo(Tenant, { foreignKey: 'tenant_id' });
+Client.belongsTo(Tenant, { as: 'tenant', foreignKey: 'tenantId' });
 
 export default Client;

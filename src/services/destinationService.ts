@@ -10,7 +10,7 @@ class DestinationService {
   }
 
   async createDestination(destinationData: {
-    client_id: number;
+    clientId: number;
     name: string;
     address: string;
   }) {
@@ -18,7 +18,7 @@ class DestinationService {
   }
 
   async updateDestination(id: number, destinationData: Partial<{
-    client_id: number;
+    clientId: number;
     name: string;
     address: string;
   }>) {

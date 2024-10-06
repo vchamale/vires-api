@@ -2,19 +2,19 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
 
 interface RoleAttributes {
-    role_id: number;
+    roleId: number;
     name: string;
 }
 
-interface RoleCreationAttributes extends Optional<RoleAttributes, 'role_id'> {}
+interface RoleCreationAttributes extends Optional<RoleAttributes, 'roleId'> {}
 
 class Role extends Model<RoleAttributes, RoleCreationAttributes> implements RoleAttributes {
-    public role_id!: number;
+    public roleId!: number;
     public name!: string;
 }
 
 Role.init({
-    role_id: {
+    roleId: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
@@ -27,6 +27,7 @@ Role.init({
     sequelize,
     modelName: 'Role',
     tableName: 'role',
+    underscored: true,
     timestamps: false
 });
 
