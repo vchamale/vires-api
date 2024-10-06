@@ -11,6 +11,10 @@ class UserService {
     async getById(userId: number) {
         return await User.findByPk(userId, { attributes: { exclude: ['password'] } });
     }
+
+    async getAll() {
+        return await User.findAll({ attributes: { exclude: ['password'] } });
+    }
 }
 
 export default new UserService();
