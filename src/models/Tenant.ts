@@ -3,49 +3,50 @@ import sequelize from '../config/database';
 import TenantStatus from './TenantStatus';
 
 interface TenantAttributes {
-    tenant_id: number;
-    subscription_id?: number;
-    tenant_status_id: number;
-    main_email: string;
-    tenant_name: string;
-    payment_id?: number;
+    tenantId: number;
+    subscriptionId?: number;
+    tenantStatusId: number;
+    mainEmail: string;
+    tenantName: string;
+    paymentId?: number;
 }
 
-interface TenantCreationAttributes extends Optional<TenantAttributes, 'tenant_id'> {}
+interface TenantCreationAttributes extends Optional<TenantAttributes, 'tenantId'> {}
 
 class Tenant extends Model<TenantAttributes, TenantCreationAttributes> implements TenantAttributes {
-    public tenant_id!: number;
-    public subscription_id?: number;
-    public tenant_status_id!: number;
-    public main_email!: string;
-    public tenant_name!: string;
-    public payment_id?: number;
+    public tenantId!: number;
+    public subscriptionId?: number;
+    public tenantStatusId!: number;
+    public mainEmail!: string;
+    public tenantName!: string;
+    public paymentId?: number;
 }
 
 Tenant.init({
-    tenant_id: {
+    tenantId: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    subscription_id: DataTypes.INTEGER,
-    tenant_status_id: {
+    subscriptionId: DataTypes.INTEGER,
+    tenantStatusId: {
         type: DataTypes.INTEGER,
-        references: { model: TenantStatus, key: 'tenant_status_id' }
+        references: { model: TenantStatus, key: 'tenantStatusId' }
     },
-    main_email: {
+    mainEmail: {
         type: DataTypes.STRING(255),
         allowNull: false
     },
-    tenant_name: DataTypes.TEXT,
-    payment_id: DataTypes.INTEGER
+    tenantName: DataTypes.TEXT,
+    paymentId: DataTypes.INTEGER
 }, {
     sequelize,
     modelName: 'Tenant',
     tableName: 'tenant',
+    underscored: true,
     timestamps: false
 });
 
-Tenant.belongsTo(TenantStatus, { foreignKey: 'tenant_status_id' });
+Tenant.belongsTo(TenantStatus, { as: 'tenantStatus', foreignKey: 'tenantStatusId' });
 
 export default Tenant;

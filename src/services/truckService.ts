@@ -2,16 +2,16 @@ import Truck from '../models/Truck';
 
 class TruckService {
   async getAllTrucks() {
-    return await Truck.findAll({ include: ['Tenant', 'Model'] });
+    return await Truck.findAll({ include: ['tenant', 'model'] });
   }
 
   async getTruckById(id: number) {
-    return await Truck.findByPk(id, { include: ['Tenant', 'Model'] });
+    return await Truck.findByPk(id, { include: ['tenant', 'model'] });
   }
 
   async createTruck(truckData: {
-    tenant_id: number;
-    model_id: number;
+    tenantId: number;
+    modelId: number;
     year: number;
     plate: string;
     vin: string;
@@ -21,8 +21,8 @@ class TruckService {
   }
 
   async updateTruck(id: number, truckData: Partial<{
-    tenant_id: number;
-    model_id: number;
+    tenantId: number;
+    modelId: number;
     year: number;
     plate: string;
     vin: string;

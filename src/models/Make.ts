@@ -2,19 +2,19 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
 
 interface MakeAttributes {
-    make_id: number;
+    makeId: number;
     name: string;
 }
 
-interface MakeCreationAttributes extends Optional<MakeAttributes, 'make_id'> {}
+interface MakeCreationAttributes extends Optional<MakeAttributes, 'makeId'> {}
 
 class Make extends Model<MakeAttributes, MakeCreationAttributes> implements MakeAttributes {
-    public make_id!: number;
+    public makeId!: number;
     public name!: string;
 }
 
 Make.init({
-    make_id: {
+    makeId: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
@@ -27,6 +27,7 @@ Make.init({
     sequelize,
     modelName: 'Make',
     tableName: 'make',
+    underscored: true,
     timestamps: false
 });
 

@@ -3,34 +3,34 @@ import sequelize from '../config/database';
 import Tenant from './Tenant';
 
 interface DocumentAttributes {
-    document_id: number;
-    tenant_id: number;
-    document_number: string;
+    documentId: number;
+    tenantId: number;
+    documentNumber: string;
 }
 
-interface DocumentCreationAttributes extends Optional<DocumentAttributes, 'document_id'> {}
+interface DocumentCreationAttributes extends Optional<DocumentAttributes, 'documentId'> {}
 
 class Document extends Model<DocumentAttributes, DocumentCreationAttributes> implements DocumentAttributes {
-    public document_id!: number;
-    public tenant_id!: number;
-    public document_number!: string;
+    public documentId!: number;
+    public tenantId!: number;
+    public documentNumber!: string;
 }
 
 Document.init({
-    document_id: {
+    documentId: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    tenant_id: {
+    tenantId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: Tenant,
-            key: 'tenant_id'
+            key: 'tenantId'
         }
     },
-    document_number: {
+    documentNumber: {
         type: DataTypes.STRING(25),
         allowNull: false
     }
@@ -38,9 +38,10 @@ Document.init({
     sequelize,
     modelName: 'Document',
     tableName: 'document',
+    underscored: true,
     timestamps: false
 });
 
-Document.belongsTo(Tenant, { foreignKey: 'tenant_id' });
+Document.belongsTo(Tenant, { as: 'tenant', foreignKey: 'tenantId' });
 
 export default Document;

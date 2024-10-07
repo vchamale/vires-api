@@ -10,78 +10,78 @@ import User from './User';
 import Truck from './Truck';
 
 interface ShipmentAttributes {
-    shipment_id: number;
-    tenant_id: number;
-    shipment_status_id: number;
-    origin_id: number;
-    destination_id: number;
-    container_id: number;
-    document_id: number;
-    driver_id: number;
-    truck_id: number;
-    status_updated: Date;
+    shipmentId: number;
+    tenantId: number;
+    shipmentStatusId: number;
+    originId: number;
+    destinationId: number;
+    containerId: number;
+    documentId: number;
+    driverId: number;
+    truckId: number;
+    statusUpdated: Date;
     price: number;
     weight: number;
     notes?: string;
 }
 
-interface ShipmentCreationAttributes extends Optional<ShipmentAttributes, 'shipment_id'> {}
+interface ShipmentCreationAttributes extends Optional<ShipmentAttributes, 'shipmentId'> {}
 
 class Shipment extends Model<ShipmentAttributes, ShipmentCreationAttributes> implements ShipmentAttributes {
-    public shipment_id!: number;
-    public tenant_id!: number;
-    public shipment_status_id!: number;
-    public origin_id!: number;
-    public destination_id!: number;
-    public container_id!: number;
-    public document_id!: number;
-    public driver_id!: number;
-    public truck_id!: number;
-    public status_updated!: Date;
+    public shipmentId!: number;
+    public tenantId!: number;
+    public shipmentStatusId!: number;
+    public originId!: number;
+    public destinationId!: number;
+    public containerId!: number;
+    public documentId!: number;
+    public driverId!: number;
+    public truckId!: number;
+    public statusUpdated!: Date;
     public price!: number;
     public weight!: number;
     public notes?: string;
 }
 
 Shipment.init({
-    shipment_id: {
+    shipmentId: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    tenant_id: {
+    tenantId: {
         type: DataTypes.INTEGER,
-        references: { model: Tenant, key: 'tenant_id' }
+        references: { model: Tenant, key: 'tenantId' }
     },
-    shipment_status_id: {
+    shipmentStatusId: {
         type: DataTypes.INTEGER,
-        references: { model: ShipmentStatus, key: 'shipment_status_id' }
+        references: { model: ShipmentStatus, key: 'shipmentStatusId' }
     },
-    origin_id: {
+    originId: {
         type: DataTypes.INTEGER,
-        references: { model: Origin, key: 'origin_id' }
+        references: { model: Origin, key: 'originId' }
     },
-    destination_id: {
+    destinationId: {
         type: DataTypes.INTEGER,
-        references: { model: Destination, key: 'destination_id' }
+        references: { model: Destination, key: 'destinationId' }
     },
-    container_id: {
+    containerId: {
         type: DataTypes.INTEGER,
-        references: { model: Container, key: 'container_id' }
+        references: { model: Container, key: 'containerId' }
     },
-    document_id: {
+    documentId: {
         type: DataTypes.INTEGER,
-        references: { model: Document, key: 'document_id' }
+        references: { model: Document, key: 'documentId' }
     },
-    driver_id: {
+    driverId: {
         type: DataTypes.INTEGER,
-        references: { model: User, key: 'user_id' }
+        references: { model: User, key: 'userId' }
     },
-    truck_id: {
+    truckId: {
         type: DataTypes.INTEGER,
-        references: { model: Truck, key: 'truck_id' }
+        references: { model: Truck, key: 'truckId' }
     },
-    status_updated: {
+    statusUpdated: {
         type: DataTypes.DATE,
         allowNull: false
     },
@@ -98,16 +98,17 @@ Shipment.init({
     sequelize,
     modelName: 'Shipment',
     tableName: 'shipment',
+    underscored: true,
     timestamps: false
 });
 
-Shipment.belongsTo(Tenant, { foreignKey: 'tenant_id' });
-Shipment.belongsTo(ShipmentStatus, { foreignKey: 'shipment_status_id' });
-Shipment.belongsTo(Origin, { foreignKey: 'origin_id' });
-Shipment.belongsTo(Destination, { foreignKey: 'destination_id' });
-Shipment.belongsTo(Container, { foreignKey: 'container_id' });
-Shipment.belongsTo(Document, { foreignKey: 'document_id' });
-Shipment.belongsTo(User, { foreignKey: 'driver_id' });
-Shipment.belongsTo(Truck, { foreignKey: 'truck_id' });
+Shipment.belongsTo(Tenant, { as: 'tenant', foreignKey: 'tenantId' });
+Shipment.belongsTo(ShipmentStatus, { as: 'shipmentStatus', foreignKey: 'shipmentStatusId' });
+Shipment.belongsTo(Origin, { as: 'origin', foreignKey: 'originId' });
+Shipment.belongsTo(Destination, { as: 'destination', foreignKey: 'destinationId' });
+Shipment.belongsTo(Container, { as: 'container', foreignKey: 'containerId' });
+Shipment.belongsTo(Document, { as: 'document', foreignKey: 'documentId' });
+Shipment.belongsTo(User, { as: 'user', foreignKey: 'driverId' });
+Shipment.belongsTo(Truck, { as: 'truck', foreignKey: 'truckId' });
 
 export default Shipment;

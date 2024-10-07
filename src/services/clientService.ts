@@ -11,7 +11,7 @@ class ClientService {
     }
 
     async getAllClients() {
-        return await Client.findAll({ include: ['Tenant'] });
+        return await Client.findAll({ include: ['tenant'] });
       }
 
     async update(clientId: number, updateData: any) {

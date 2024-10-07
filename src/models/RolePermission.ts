@@ -4,29 +4,30 @@ import Role from './Role';
 import Permission from './Permission';
 
 class RolePermission extends Model {
-    public role_id!: number;
-    public permission_id!: number;
+    public roleId!: number;
+    public permissionId!: number;
 }
 
 RolePermission.init({
-    role_id: {
+    roleId: {
         type: DataTypes.INTEGER,
-        references: { model: Role, key: 'role_id' },
+        references: { model: Role, key: 'roleId' },
         primaryKey: true
     },
-    permission_id: {
+    permissionId: {
         type: DataTypes.INTEGER,
-        references: { model: Permission, key: 'permission_id' },
+        references: { model: Permission, key: 'permissionId' },
         primaryKey: true
     }
 }, {
     sequelize,
     modelName: 'RolePermission',
     tableName: 'role_permission',
+    underscored: true,
     timestamps: false
 });
 
-Role.belongsToMany(Permission, { through: RolePermission, foreignKey: 'role_id' });
-Permission.belongsToMany(Role, { through: RolePermission, foreignKey: 'permission_id' });
+Role.belongsToMany(Permission, { as: 'role', through: RolePermission, foreignKey: 'roleId' });
+Permission.belongsToMany(Role, { as: 'permission', through: RolePermission, foreignKey: 'permissionId' });
 
 export default RolePermission;

@@ -2,20 +2,20 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
 
 interface TenantStatusAttributes {
-    tenant_status_id: number;
+    tenantStatusId: number;
     description: string;
 }
 
-interface TenantStatusCreationAttributes extends Optional<TenantStatusAttributes, 'tenant_status_id'> {}
+interface TenantStatusCreationAttributes extends Optional<TenantStatusAttributes, 'tenantStatusId'> {}
 
 class TenantStatus extends Model<TenantStatusAttributes, TenantStatusCreationAttributes>
     implements TenantStatusAttributes {
-    public tenant_status_id!: number;
+    public tenantStatusId!: number;
     public description!: string;
 }
 
 TenantStatus.init({
-    tenant_status_id: {
+    tenantStatusId: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
@@ -28,6 +28,7 @@ TenantStatus.init({
     sequelize,
     modelName: 'TenantStatus',
     tableName: 'tenant_status',
+    underscored: true,
     timestamps: false
 });
 

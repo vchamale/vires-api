@@ -1,4 +1,12 @@
+import User from '../models/User';
 import Shipment from '../models/Shipment';
+import Tenant from '../models/Tenant';
+import ShipmentStatus from '../models/ShipmentStatus';
+import Origin from '../models/Origin';
+import Destination from '../models/Destination';
+import Container from '../models/Container';
+import Truck from '../models/Truck';
+import Document from '../models/Document';
 
 class ShipmentService {
     async create(shipmentData: any) {
@@ -8,7 +16,21 @@ class ShipmentService {
 
     async getById(shipmentId: number) {
         return await Shipment.findByPk(shipmentId, {
-            include: ['Tenant', 'ShipmentStatus', 'Origin', 'Destination', 'Container', 'Document', 'User', 'Truck']
+            include: [
+              { model: Tenant, as: 'tenant' },
+              { model: ShipmentStatus, as: 'shipmentStatus' },
+              { model: Origin, as: 'origin' },
+              { model: Destination, as: 'destination' },
+              { model: Container, as: 'container' },
+              { model: Document, as: 'document' },
+              {
+                model: User,
+                as: 'user',
+                attributes: { exclude: ['password'] },
+              },
+              { model: Truck, as: 'truck' }
+            ],
+            attributes: { exclude: ['password'] }
         });
     }
 
@@ -31,7 +53,20 @@ class ShipmentService {
 
     async getAll() {
         return await Shipment.findAll({
-            include: ['Tenant', 'ShipmentStatus', 'Origin', 'Destination', 'Container', 'Document', 'User', 'Truck']
+          include: [
+            { model: Tenant, as: 'tenant' },
+            { model: ShipmentStatus, as: 'shipmentStatus' },
+            { model: Origin, as: 'origin' },
+            { model: Destination, as: 'destination' },
+            { model: Container, as: 'container' },
+            { model: Document, as: 'document' },
+            {
+              model: User,
+              as: 'user',
+              attributes: { exclude: ['password'] },
+            },
+            { model: Truck, as: 'truck' }
+          ]
         });
     }
 }

@@ -4,21 +4,21 @@ import Tenant from './Tenant';
 import TruckModel from './Model';
 
 interface TruckAttributes {
-    truck_id: number;
-    tenant_id: number;
-    model_id: number;
+    truckId: number;
+    tenantId: number;
+    modelId: number;
     year: number;
     plate: string;
     vin: string;
     status: boolean;
 }
 
-interface TruckCreationAttributes extends Optional<TruckAttributes, 'truck_id'> {}
+interface TruckCreationAttributes extends Optional<TruckAttributes, 'truckId'> {}
 
 class Truck extends Model<TruckAttributes, TruckCreationAttributes> implements TruckAttributes {
-    public truck_id!: number;
-    public tenant_id!: number;
-    public model_id!: number;
+    public truckId!: number;
+    public tenantId!: number;
+    public modelId!: number;
     public year!: number;
     public plate!: string;
     public vin!: string;
@@ -26,18 +26,18 @@ class Truck extends Model<TruckAttributes, TruckCreationAttributes> implements T
 }
 
 Truck.init({
-    truck_id: {
+    truckId: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    tenant_id: {
+    tenantId: {
         type: DataTypes.INTEGER,
-        references: { model: Tenant, key: 'tenant_id' }
+        references: { model: Tenant, key: 'tenantId' }
     },
-    model_id: {
+    modelId: {
         type: DataTypes.INTEGER,
-        references: { model: TruckModel, key: 'model_id' }
+        references: { model: TruckModel, key: 'modelId' }
     },
     year: DataTypes.INTEGER,
     plate: {
@@ -56,10 +56,11 @@ Truck.init({
     sequelize,
     modelName: 'Truck',
     tableName: 'truck',
+    underscored: true,
     timestamps: false
 });
 
-Truck.belongsTo(Tenant, { foreignKey: 'tenant_id' });
-Truck.belongsTo(TruckModel, { foreignKey: 'model_id' });
+Truck.belongsTo(Tenant, { as: 'tenant', foreignKey: 'tenantId' });
+Truck.belongsTo(TruckModel, { as: 'model', foreignKey: 'modelId' });
 
 export default Truck;

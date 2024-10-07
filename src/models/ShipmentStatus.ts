@@ -2,19 +2,19 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
 
 interface ShipmentStatusAttributes {
-    shipment_status_id: number;
+    shipmentStatusId: number;
     description: string;
 }
 
-interface ShipmentStatusCreationAttributes extends Optional<ShipmentStatusAttributes, 'shipment_status_id'> {}
+interface ShipmentStatusCreationAttributes extends Optional<ShipmentStatusAttributes, 'shipmentStatusId'> {}
 
 class ShipmentStatus extends Model<ShipmentStatusAttributes, ShipmentStatusCreationAttributes> implements ShipmentStatusAttributes {
-    public shipment_status_id!: number;
+    public shipmentStatusId!: number;
     public description!: string;
 }
 
 ShipmentStatus.init({
-    shipment_status_id: {
+    shipmentStatusId: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
@@ -27,6 +27,7 @@ ShipmentStatus.init({
     sequelize,
     modelName: 'ShipmentStatus',
     tableName: 'shipment_status',
+    underscored: true,
     timestamps: false
 });
 
