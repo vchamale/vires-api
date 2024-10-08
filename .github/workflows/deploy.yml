@@ -19,5 +19,5 @@ jobs:
             if [ -d "vires-api" ]; then
             rm -rf vires-api
             fi
-            git clone git@github.com:vchamale/vires-api.git .
+            git clone git@github.com:vchamale/vires-api.git
             echo 'Deployment successful to digital ocean'
