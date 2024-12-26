@@ -1,13 +1,29 @@
 import { Request, Response } from 'express';
 import truckService from '../services/truckService';
+import { Op, literal } from 'sequelize';
 
 class TruckController {
   async getAllTrucks(req: Request, res: Response) {
+    console.log('asdjkasdj')
     try {
-      const trucks = await truckService.getAllTrucks();
-      res.status(200).json(trucks);
+        const { search } = req.query;
+
+        const filters: any = {};
+        if (search) {
+          filters[Op.or] = [
+            literal(`LOWER(plate) LIKE LOWER('%${search}%')`),
+            literal(`LOWER(vin) LIKE LOWER('%${search}%')`),
+            literal(`LOWER(CAST(year AS TEXT)) LIKE LOWER('%${search}%')`),
+            literal(`LOWER("model"."name") LIKE LOWER('%${search}%')`)
+          ];
+        }
+
+        console.log('filters ', filters)
+
+        const trucks = await truckService.getAllTrucks(filters);
+        res.status(200).json(trucks);
     } catch (error: any) {
-      res.status(500).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
   }
 
@@ -34,6 +50,7 @@ class TruckController {
 
   async updateTruck(req: Request, res: Response) {
     try {
+      console.log('hahaha asd ', req.body, ' id: ', req.params.id)
       const updatedTruck = await truckService.updateTruck(+req.params.id, req.body);
       res.status(200).json(updatedTruck);
     } catch (error: any) {

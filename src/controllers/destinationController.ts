@@ -1,10 +1,24 @@
 import { Request, Response } from 'express';
 import destinationService from '../services/destinationService';
+import { col, fn, where } from 'sequelize';
+import { Op } from 'sequelize';
 
 class DestinationController {
   async getAllDestinations(req: Request, res: Response) {
     try {
-      const destinations = await destinationService.getAllDestinations();
+      const { search } = req.query;
+      const filters: any = {};
+      if (search) {
+        filters[Op.or] = [
+          where(fn('LOWER', col('name')), {
+            [Op.like]: fn('LOWER',`%${search}%`),
+          }),
+          where(fn('LOWER', col('address')), {
+            [Op.like]: fn('LOWER',`%${search}%`),
+          }),
+        ];
+      }
+      const destinations = await destinationService.getAllDestinations(filters);
       res.status(200).json(destinations);
     } catch (error: any) {
       res.status(500).json({ message: error.message });

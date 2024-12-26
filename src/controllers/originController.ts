@@ -1,19 +1,36 @@
 import { Request, Response } from 'express';
-import originService from '../services/originService';
+import OriginService from '../services/originService';
+import { Op, col, fn, where } from 'sequelize';
 
 class OriginController {
   async getAllOrigins(req: Request, res: Response) {
     try {
-      const origins = await originService.getAllOrigins();
+      const { search } = req.query;
+      const filters: any = {};
+      if (search) {
+        filters[Op.or] = [
+          where(fn('LOWER', col('name')), {
+            [Op.like]: fn('LOWER',`%${search}%`),
+          }),
+          where(fn('LOWER', col('address')), {
+            [Op.like]: fn('LOWER',`%${search}%`),
+          }),
+        ];
+      }
+
+      // Llamar al servicio con los filtros
+      const origins = await OriginService.getAllOrigin(filters);
+
       res.status(200).json(origins);
     } catch (error: any) {
+      console.error('Error fetching origins:', error);
       res.status(500).json({ message: error.message });
     }
   }
 
   async getOriginById(req: Request, res: Response) {
     try {
-      const origin = await originService.getOriginById(+req.params.id);
+      const origin = await OriginService.getOriginById(+req.params.id);
       if (!origin) {
         return res.status(404).json({ message: 'Origin not found' });
       }
@@ -25,7 +42,7 @@ class OriginController {
 
   async createOrigin(req: Request, res: Response) {
     try {
-      const newOrigin = await originService.createOrigin(req.body);
+      const newOrigin = await OriginService.createOrigin(req.body);
       res.status(201).json(newOrigin);
     } catch (error: any) {
       res.status(500).json({ message: error.message });
@@ -34,7 +51,7 @@ class OriginController {
 
   async updateOrigin(req: Request, res: Response) {
     try {
-      const updatedOrigin = await originService.updateOrigin(+req.params.id, req.body);
+      const updatedOrigin = await OriginService.updateOrigin(+req.params.id, req.body);
       res.status(200).json(updatedOrigin);
     } catch (error: any) {
       res.status(500).json({ message: error.message });
@@ -43,7 +60,7 @@ class OriginController {
 
   async deleteOrigin(req: Request, res: Response) {
     try {
-      await originService.deleteOrigin(+req.params.id);
+      await OriginService.deleteOrigin(+req.params.id);
       res.status(204).send();
     } catch (error: any) {
       res.status(500).json({ message: error.message });

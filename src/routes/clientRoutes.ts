@@ -2,13 +2,14 @@ import express from 'express';
 import ClientController from '../controllers/clientController';
 import authMiddleware from '../middlewares/authMiddleware';
 import roleMiddleware from '../middlewares/roleMiddleware';
+import modifyRequestMiddleware from '../middlewares/modifyRequestMiddleware';
 
 const router = express.Router();
 
 router.post('/', authMiddleware, roleMiddleware('Admin'), ClientController.createClient);
 // router.get('/:id', authMiddleware, ClientController.getClient);
 router.get('/:id', ClientController.getClient);
-router.get('/', ClientController.getAllClients);
+router.get('/', authMiddleware, modifyRequestMiddleware({}), ClientController.getAllClients);
 router.put('/:id', authMiddleware, roleMiddleware('Admin'), ClientController.updateClient);
 router.delete('/:id', authMiddleware, roleMiddleware('Admin'), ClientController.deleteClient);
 

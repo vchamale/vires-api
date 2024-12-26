@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import ClientService from '../services/clientService';
+import { Op, literal } from 'sequelize';
 
 class ClientController {
     async createClient(req: Request, res: Response) {
@@ -25,12 +26,28 @@ class ClientController {
 
     async getAllClients(req: Request, res: Response) {
         try {
-          const clients = await ClientService.getAllClients();
-          res.status(200).json(clients);
+            const { search } = req.query;
+
+            const filters: any = {};
+
+            if (search) {
+                const lowerSearch = search.toString().toLowerCase();
+
+                filters[Op.or] = [
+                    literal(`LOWER(nit) LIKE LOWER('%${lowerSearch}%')`), // NIT insensible al caso
+                    literal(`LOWER(name) LIKE LOWER('%${lowerSearch}%')`), // Name insensible al caso
+                    literal(`LOWER(address) LIKE LOWER('%${lowerSearch}%')`), // Address insensible al caso
+                    literal(`LOWER(email) LIKE LOWER('%${lowerSearch}%')`) // Email insensible al caso
+                ];
+            }
+
+            const clients = await ClientService.getAllClients(filters);
+            res.status(200).json(clients);
         } catch (error: any) {
-          res.status(500).json({ message: error.message });
+            console.error('Error fetching clients:', error);
+            res.status(500).json({ message: error.message });
         }
-      }
+    }
 
     async updateClient(req: Request, res: Response) {
         try {

@@ -1,8 +1,10 @@
 import Origin from '../models/Origin';
 
 class OriginService {
-  async getAllOrigins() {
-    return await Origin.findAll();
+  async getAllOrigin(filters: any = {}) {
+    return await Origin.findAll({
+      where: filters
+    });
   }
 
   async getOriginById(id: number) {

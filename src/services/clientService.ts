@@ -10,9 +10,12 @@ class ClientService {
         return await Client.findByPk(clientId);
     }
 
-    async getAllClients() {
-        return await Client.findAll({ include: ['tenant'] });
-      }
+    async getAllClients(filters: any = {}) {
+        return await Client.findAll({
+            where: filters,
+            include: ['tenant'], // Incluye relaciones necesarias
+        });
+    }
 
     async update(clientId: number, updateData: any) {
         const client = await Client.findByPk(clientId);

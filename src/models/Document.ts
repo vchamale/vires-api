@@ -6,14 +6,22 @@ interface DocumentAttributes {
     documentId: number;
     tenantId: number;
     documentNumber: string;
+    createdAt: Date;
+    updatedAt: Date;
+    createdBy?: number;
+    updatedBy?: number;
 }
 
-interface DocumentCreationAttributes extends Optional<DocumentAttributes, 'documentId'> {}
+interface DocumentCreationAttributes extends Optional<DocumentAttributes, 'documentId' | 'createdAt' | 'updatedAt' | 'createdBy' | 'updatedBy'> {}
 
 class Document extends Model<DocumentAttributes, DocumentCreationAttributes> implements DocumentAttributes {
     public documentId!: number;
     public tenantId!: number;
     public documentNumber!: string;
+    public createdAt!: Date;
+    public updatedAt!: Date;
+    public createdBy?: number;
+    public updatedBy?: number;
 }
 
 Document.init({
@@ -33,13 +41,41 @@ Document.init({
     documentNumber: {
         type: DataTypes.STRING(25),
         allowNull: false
+    },
+    createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW
+    },
+    updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW
+    },
+    createdBy: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: 'app_user',
+            key: 'user_id'
+        },
+        allowNull: true
+    },
+    updatedBy: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: 'app_user',
+            key: 'user_id'
+        },
+        allowNull: true
     }
 }, {
     sequelize,
     modelName: 'Document',
     tableName: 'document',
     underscored: true,
-    timestamps: false
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
 });
 
 Document.belongsTo(Tenant, { as: 'tenant', foreignKey: 'tenantId' });

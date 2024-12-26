@@ -11,9 +11,12 @@ import roleRoutes from "./routes/roleRoutes";
 import driverRoutes from "./routes/driverRoutes";
 import clientRoutes from "./routes/clientRoutes";
 import shipmentRoutes from "./routes/shipmentRoutes";
+import documentRoutes from "./routes/documentRoutes";
 import destinationRoutes from "./routes/destinationRoutes";
 import originRoutes from "./routes/originRoutes";
 import truckRoutes from "./routes/truckRoutes";
+import makeRoutes from "./routes/makeRoutes";
+import modelRoutes from "./routes/truckModelRoutes";
 import currencyRoutes from "./routes/currencyRoutes";
 import containerRoutes from "./routes/containerRoutes";
 
@@ -35,9 +38,12 @@ app.use("/api/roles", roleRoutes);
 app.use("/api/drivers", driverRoutes);
 app.use("/api/clients", clientRoutes);
 app.use("/api/shipments", shipmentRoutes);
+app.use("/api/documents", documentRoutes);
 app.use("/api/destinations", destinationRoutes);
 app.use("/api/origins", originRoutes);
 app.use("/api/trucks", truckRoutes);
+app.use("/api/make", makeRoutes);
+app.use("/api/model", modelRoutes);
 app.use("/api/currencies", currencyRoutes);
 app.use("/api/containers", containerRoutes);
 

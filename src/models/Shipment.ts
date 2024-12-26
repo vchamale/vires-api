@@ -19,7 +19,7 @@ interface ShipmentAttributes {
     documentId: number;
     driverId: number;
     truckId: number;
-    statusUpdated: Date;
+    dateCreated: Date;
     price: number;
     weight: number;
     notes?: string;
@@ -37,7 +37,7 @@ class Shipment extends Model<ShipmentAttributes, ShipmentCreationAttributes> imp
     public documentId!: number;
     public driverId!: number;
     public truckId!: number;
-    public statusUpdated!: Date;
+    public dateCreated!: Date;
     public price!: number;
     public weight!: number;
     public notes?: string;
@@ -81,7 +81,7 @@ Shipment.init({
         type: DataTypes.INTEGER,
         references: { model: Truck, key: 'truckId' }
     },
-    statusUpdated: {
+    dateCreated: {
         type: DataTypes.DATE,
         allowNull: false
     },

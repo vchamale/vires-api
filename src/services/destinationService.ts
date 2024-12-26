@@ -1,8 +1,10 @@
 import Destination from '../models/Destination';
 
 class DestinationService {
-  async getAllDestinations() {
-    return await Destination.findAll();
+  async getAllDestinations(filters: any = {}) {
+    return await Destination.findAll({
+      where: filters
+    });
   }
 
   async getDestinationById(id: number) {

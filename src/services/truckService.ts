@@ -1,8 +1,16 @@
+import TruckModel from '../models/Model';
+import Tenant from '../models/Tenant';
 import Truck from '../models/Truck';
 
 class TruckService {
-  async getAllTrucks() {
-    return await Truck.findAll({ include: ['tenant', 'model'] });
+  async getAllTrucks(filters: any = {}) {
+    return await Truck.findAll({
+        where: filters,
+        include: [
+          { model: Tenant, as: 'tenant' },
+          { model: TruckModel, as: 'model' }
+      ]
+    });
   }
 
   async getTruckById(id: number) {
