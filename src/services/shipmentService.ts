@@ -51,8 +51,10 @@ class ShipmentService {
         return true;
     }
 
-    async getAll() {
+    async getAll(filters: any = {}) {
+      console.log('filters ', filters)
         return await Shipment.findAll({
+          where: filters,
           include: [
             { model: Tenant, as: 'tenant' },
             { model: ShipmentStatus, as: 'shipmentStatus' },
