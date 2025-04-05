@@ -6,8 +6,13 @@ class ClientService {
         return newClient;
     }
 
-    async getById(clientId: number) {
-        return await Client.findByPk(clientId);
+    async getById(clientId: number, tenantId: number) {
+        return await Client.findOne({
+            where: {
+                clientId,
+                tenantId
+            }
+        });
     }
 
     async getAllClients(filters: any = {}) {

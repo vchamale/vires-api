@@ -4,6 +4,10 @@ import TruckModelService from '../services/truckModelService';
 class TruckModelController {
     async create(req: Request, res: Response) {
         try {
+            const { tenantId } = req.body;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
             const newTruckModel = await TruckModelService.create(req.body);
             return res.status(201).json(newTruckModel);
         } catch (error: any) {
@@ -13,7 +17,11 @@ class TruckModelController {
 
     async getById(req: Request, res: Response) {
         try {
-            const truckModel = await TruckModelService.getById(parseInt(req.params.id));
+            const { tenantId } = req.query;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
+            const truckModel = await TruckModelService.getById(+req.params.id);
             if (!truckModel) {
                 return res.status(404).json({ message: 'Truck model not found' });
             }
@@ -25,7 +33,11 @@ class TruckModelController {
 
     async update(req: Request, res: Response) {
         try {
-            const updatedTruckModel = await TruckModelService.update(parseInt(req.params.id), req.body);
+            const { tenantId } = req.body;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
+            const updatedTruckModel = await TruckModelService.update(+req.params.id, req.body);
             if (!updatedTruckModel) {
                 return res.status(404).json({ message: 'Truck model not found' });
             }
@@ -37,7 +49,11 @@ class TruckModelController {
 
     async delete(req: Request, res: Response) {
         try {
-            const deleted = await TruckModelService.delete(parseInt(req.params.id));
+            const { tenantId } = req.query;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
+            const deleted = await TruckModelService.delete(+req.params.id);
             if (!deleted) {
                 return res.status(404).json({ message: 'Truck model not found' });
             }
@@ -49,6 +65,10 @@ class TruckModelController {
 
     async getAll(req: Request, res: Response) {
         try {
+            const { tenantId } = req.query;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
             const filters = req.query;
             const truckModels = await TruckModelService.getAll(filters);
             return res.status(200).json(truckModels);

@@ -9,20 +9,34 @@ const modifyRequestMiddleware =
   (options: ModifyBodyOptions = {}) =>
   (req: Request, res: Response, next: NextFunction) => {
     const { append = {}, overwrite = {} } = options;
-    console.log('mod req mid')
-    // Si `includeTenantId` está habilitado, lo añade al body
-    if ((req as any).tenantId) {
-      append.tenantId = (req as any).tenantId;
+
+    console.log('req.tenantId ', req.tenantId)
+
+    if (req.tenantId) {
+      append.tenantId = req.tenantId;
     }
 
-    // Modifica el body según las opciones proporcionadas
-    req.body = {
-      ...req.body,
-      ...append,
-      ...overwrite,
-    };
+    console.log('append ', append)
 
-    console.log('final body ', req.body)
+    if (req.method === 'GET' || req.method === 'DELETE') {
+      req.query = {
+        ...req.query,
+        ...append,
+        ...overwrite,
+      };
+    } else {
+      req.body = {
+        ...req.body,
+        ...append,
+        ...overwrite,
+      };
+    }
+
+    console.log('Modified Request:', {
+      method: req.method,
+      query: req.query,
+      body: req.body,
+    });
 
     next();
   };

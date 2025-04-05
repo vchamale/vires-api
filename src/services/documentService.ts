@@ -8,8 +8,12 @@ class DocumentService {
         return newDocument;
     }
 
-    async getById(documentId: number) {
-        return await Document.findByPk(documentId, {
+    async getById(documentId: number, tenantId: number) {
+        return await Document.findOne({
+            where: {
+                documentId,
+                tenantId
+            },
             include: [
                 { model: Tenant, as: 'tenant' }
             ]

@@ -1,8 +1,8 @@
 import Role from '../models/Role';
 
 class RoleService {
-    async getAll() {
-        return await Role.findAll();
+    async getAll(filters: any) {
+        return await Role.findAll({ where: filters });
     }
 }
 

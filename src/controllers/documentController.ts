@@ -1,13 +1,16 @@
 import { Request, Response } from 'express';
-import { Op, literal } from 'sequelize';
-import { startOfDay, endOfDay, add, parseISO } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
+import { Op } from 'sequelize';
+import { startOfDay, endOfDay, parseISO } from 'date-fns';
 import DocumentService from '../services/documentService';
 
 class DocumentController {
     // async create(req: Request, res: Response): Promise<Response>  {
     async create(req: Request, res: Response) {
         try {
+            const { tenantId } = req.body;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
             const newDocument = await DocumentService.create(document);
             return res.status(201).json(newDocument);
         } catch (error: any) {
@@ -17,7 +20,11 @@ class DocumentController {
 
     async getById(req: Request, res: Response): Promise<Response> {
         try {
-            const document = await DocumentService.getById(parseInt(req.params.id));
+            const { tenantId } = req.query;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
+            const document = await DocumentService.getById(+req.params.id, +tenantId);
             if (!document) {
                 return res.status(404).json({ message: 'Document not found' });
             }
@@ -29,7 +36,11 @@ class DocumentController {
 
     async update(req: Request, res: Response): Promise<Response> {
         try {
-            const updatedDocument = await DocumentService.update(parseInt(req.params.id), req.body);
+            const { tenantId } = req.body;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
+            const updatedDocument = await DocumentService.update(+req.params.id, req.body);
             if (!updatedDocument) {
                 return res.status(404).json({ message: 'Document not found' });
             }
@@ -41,7 +52,11 @@ class DocumentController {
 
     async delete(req: Request, res: Response): Promise<Response> {
         try {
-            const deleted = await DocumentService.delete(parseInt(req.params.id));
+            const { tenantId } = req.query;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
+            const deleted = await DocumentService.delete(+req.params.id);
             if (!deleted) {
                 return res.status(404).json({ message: 'Document not found' });
             }
@@ -53,6 +68,10 @@ class DocumentController {
 
     async getAll(req: Request, res: Response) {
         try {
+            const { tenantId } = req.query;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
             const { documentNumber, startDate, endDate } = req.query;
 
             const filters: any = {};
@@ -74,6 +93,7 @@ class DocumentController {
                 }
             }
 
+            filters.tenantId = tenantId;
             const documents = await DocumentService.getAll(filters);
 
             res.status(200).json(documents);

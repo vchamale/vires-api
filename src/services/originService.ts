@@ -7,8 +7,13 @@ class OriginService {
     });
   }
 
-  async getOriginById(id: number) {
-    return await Origin.findByPk(id);
+  async getOriginById(originId: number, tenantId: number) {
+    return await Origin.findOne({
+      where: {
+        originId,
+        tenantId
+      }
+    });
   }
 
   async createOrigin(originData: {

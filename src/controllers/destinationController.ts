@@ -6,7 +6,11 @@ import { Op } from 'sequelize';
 class DestinationController {
   async getAllDestinations(req: Request, res: Response) {
     try {
-      const { search } = req.query;
+      const { tenantId, search } = req.query;
+      if (!tenantId) {
+          return res.status(400).json({ message: 'Tenant ID is required' });
+      }
+
       const filters: any = {};
       if (search) {
         filters[Op.or] = [
@@ -18,7 +22,8 @@ class DestinationController {
           }),
         ];
       }
-      const destinations = await destinationService.getAllDestinations(filters);
+
+      const destinations = await destinationService.getAllDestinations(filters, +tenantId);
       res.status(200).json(destinations);
     } catch (error: any) {
       res.status(500).json({ message: error.message });
@@ -39,6 +44,10 @@ class DestinationController {
 
   async createDestination(req: Request, res: Response) {
     try {
+      const { tenantId } = req.body;
+      if (!tenantId) {
+          return res.status(400).json({ message: 'Tenant ID is required' });
+      }
       const newDestination = await destinationService.createDestination(req.body);
       res.status(201).json(newDestination);
     } catch (error: any) {
@@ -48,6 +57,10 @@ class DestinationController {
 
   async updateDestination(req: Request, res: Response) {
     try {
+      const { tenantId } = req.body;
+      if (!tenantId) {
+          return res.status(400).json({ message: 'Tenant ID is required' });
+      }
       const updatedDestination = await destinationService.updateDestination(+req.params.id, req.body);
       res.status(200).json(updatedDestination);
     } catch (error: any) {
@@ -57,6 +70,10 @@ class DestinationController {
 
   async deleteDestination(req: Request, res: Response) {
     try {
+      const { tenantId } = req.query;
+      if (!tenantId) {
+          return res.status(400).json({ message: 'Tenant ID is required' });
+      }
       await destinationService.deleteDestination(+req.params.id);
       res.status(204).send();
     } catch (error: any) {

@@ -4,7 +4,11 @@ import containerService from '../services/containerService';
 class ContainerController {
     async getAllContainers(req: Request, res: Response) {
         try {
-            const containers = await containerService.getAllContainers();
+            const { tenantId } = req.query;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
+            const containers = await containerService.getAllContainers(+tenantId);
             res.status(200).json(containers);
         } catch (error: any) {
             res.status(500).json({ message: error.message });
@@ -13,7 +17,11 @@ class ContainerController {
 
     async getContainerById(req: Request, res: Response) {
         try {
-            const container = await containerService.getContainerById(+req.params.id);
+            const { tenantId } = req.query;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
+            const container = await containerService.getContainerById(+req.params.id, +tenantId);
             if (!container) {
                 return res.status(404).json({ message: 'Container not found' });
             }
@@ -25,6 +33,10 @@ class ContainerController {
 
     async createContainer(req: Request, res: Response) {
         try {
+            const { tenantId } = req.body;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
             const newContainer = await containerService.createContainer(req.body);
             res.status(201).json(newContainer);
         } catch (error: any) {
@@ -34,6 +46,10 @@ class ContainerController {
 
     async updateContainer(req: Request, res: Response) {
         try {
+            const { tenantId } = req.body;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
             const updatedContainer = await containerService.updateContainer(+req.params.id, req.body);
             res.status(200).json(updatedContainer);
         } catch (error: any) {
@@ -43,6 +59,10 @@ class ContainerController {
 
     async deleteContainer(req: Request, res: Response) {
         try {
+            const { tenantId } = req.query;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
             await containerService.deleteContainer(+req.params.id);
             res.status(204).send();
         } catch (error: any) {

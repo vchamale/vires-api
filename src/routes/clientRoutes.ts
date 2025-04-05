@@ -6,11 +6,11 @@ import modifyRequestMiddleware from '../middlewares/modifyRequestMiddleware';
 
 const router = express.Router();
 
-router.post('/', authMiddleware, roleMiddleware('Admin'), ClientController.createClient);
+router.post('/', authMiddleware, modifyRequestMiddleware({}), roleMiddleware('Admin'), ClientController.createClient);
 // router.get('/:id', authMiddleware, ClientController.getClient);
-router.get('/:id', ClientController.getClient);
+router.get('/:id', authMiddleware, modifyRequestMiddleware({}), ClientController.getClient);
 router.get('/', authMiddleware, modifyRequestMiddleware({}), ClientController.getAllClients);
-router.put('/:id', authMiddleware, roleMiddleware('Admin'), ClientController.updateClient);
-router.delete('/:id', authMiddleware, roleMiddleware('Admin'), ClientController.deleteClient);
+router.put('/:id', authMiddleware, modifyRequestMiddleware({}), roleMiddleware('Admin'), ClientController.updateClient);
+router.delete('/:id', authMiddleware, modifyRequestMiddleware({}), roleMiddleware('Admin'), ClientController.deleteClient);
 
 export default router;

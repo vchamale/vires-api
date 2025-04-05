@@ -5,11 +5,11 @@ import modifyRequestMiddleware from '../middlewares/modifyRequestMiddleware';
 
 const router = Router();
 
-router.get('/', OriginController.getAllOrigins);
-router.get('/:id', OriginController.getOriginById);
+router.get('/', authMiddleware, modifyRequestMiddleware({}), OriginController.getAllOrigins);
+router.get('/:id', authMiddleware, modifyRequestMiddleware({}), OriginController.getOriginById);
 // router.post('/', OriginController.createOrigin);
 router.post('/', authMiddleware, modifyRequestMiddleware({}), OriginController.createOrigin);
 router.put('/:id', authMiddleware, modifyRequestMiddleware({}), OriginController.updateOrigin);
-router.delete('/:id', OriginController.deleteOrigin);
+router.delete('/:id', authMiddleware, modifyRequestMiddleware({}), OriginController.deleteOrigin);
 
 export default router;

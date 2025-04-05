@@ -1,10 +1,11 @@
 import express from 'express';
 import RoleController from '../controllers/roleController';
 import authMiddleware from '../middlewares/authMiddleware';
-import roleMiddleware from '../middlewares/roleMiddleware';
+import modifyRequestMiddleware from '../middlewares/modifyRequestMiddleware';
 
 const router = express.Router();
 
-router.get('/', authMiddleware, roleMiddleware('Admin'), RoleController.getAllRoles);
+// router.get('/', authMiddleware, roleMiddleware('Admin'), RoleController.getAllRoles);
+router.get('/', authMiddleware, modifyRequestMiddleware({}), RoleController.getAllRoles);
 
 export default router;

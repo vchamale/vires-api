@@ -1,12 +1,23 @@
 import Container from '../models/Container';
 
 class ContainerService {
-    async getAllContainers() {
-        return await Container.findAll({ include: ['tenant', 'size'] });
+    async getAllContainers(tenantId: number) {
+        return await Container.findAll({ 
+            where: {
+                tenantId
+            },
+            include: ['tenant', 'size'] 
+        });
     }
 
-    async getContainerById(id: number) {
-        return await Container.findByPk(id, { include: ['tenant', 'size'] });
+    async getContainerById(containerId: number, tenantId: number) {
+        return await Container.findOne({ 
+            where: {
+                containerId,
+                tenantId
+            },
+            include: ['tenant', 'size'] 
+        });
     }
 
     async createContainer(containerData: {

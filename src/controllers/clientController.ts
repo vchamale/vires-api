@@ -5,6 +5,10 @@ import { Op, literal } from 'sequelize';
 class ClientController {
     async createClient(req: Request, res: Response) {
         try {
+            const { tenantId } = req.body;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
             const newClient = await ClientService.create(req.body);
             return res.status(201).json(newClient);
         } catch (error: any) {
@@ -14,7 +18,12 @@ class ClientController {
 
     async getClient(req: Request, res: Response) {
         try {
-            const client = await ClientService.getById(parseInt(req.params.id));
+            const { tenantId } = req.query;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
+
+            const client = await ClientService.getById(+req.params.id, +tenantId);
             if (!client) {
                 return res.status(404).json({ message: 'Client not found' });
             }
@@ -26,6 +35,10 @@ class ClientController {
 
     async getAllClients(req: Request, res: Response) {
         try {
+            const { tenantId } = req.query;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
             const { search } = req.query;
 
             const filters: any = {};
@@ -41,6 +54,8 @@ class ClientController {
                 ];
             }
 
+            filters.tenantId = tenantId;
+
             const clients = await ClientService.getAllClients(filters);
             res.status(200).json(clients);
         } catch (error: any) {
@@ -51,7 +66,11 @@ class ClientController {
 
     async updateClient(req: Request, res: Response) {
         try {
-            const updatedClient = await ClientService.update(parseInt(req.params.id), req.body);
+            const { tenantId } = req.body;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
+            const updatedClient = await ClientService.update(+req.params.id, req.body);
             if (!updatedClient) {
                 return res.status(404).json({ message: 'Client not found' });
             }
@@ -63,7 +82,11 @@ class ClientController {
 
     async deleteClient(req: Request, res: Response) {
         try {
-            const deleted = await ClientService.delete(parseInt(req.params.id));
+            const { tenantId } = req.query;
+            if (!tenantId) {
+                return res.status(400).json({ message: 'Tenant ID is required' });
+            }
+            const deleted = await ClientService.delete(+req.params.id);
             if (!deleted) {
                 return res.status(404).json({ message: 'Client not found' });
             }

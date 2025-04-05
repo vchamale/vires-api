@@ -7,11 +7,11 @@ import modifyRequestMiddleware from '../middlewares/modifyRequestMiddleware';
 const router = express.Router();
 
 // router.post('/', authMiddleware, roleMiddleware('Admin'), ShipmentController.create);
-router.post('/', ShipmentController.create);
-router.get('/:id', authMiddleware, ShipmentController.getById);
+router.post('/', authMiddleware, modifyRequestMiddleware({}), ShipmentController.create);
+router.get('/:id', authMiddleware, modifyRequestMiddleware({}), ShipmentController.getById);
 // router.put('/:id', authMiddleware, roleMiddleware('Admin'), ShipmentController.update);
 router.put('/:id', authMiddleware, modifyRequestMiddleware({}), ShipmentController.update);
-router.delete('/:id', authMiddleware, roleMiddleware('Admin'), ShipmentController.delete);
+router.delete('/:id', authMiddleware, modifyRequestMiddleware({}), roleMiddleware('Admin'), ShipmentController.delete);
 // router.get('/', authMiddleware, ShipmentController.getAll);
 router.get('/', authMiddleware, modifyRequestMiddleware({}), ShipmentController.getAll);
 

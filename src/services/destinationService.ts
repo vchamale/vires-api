@@ -1,14 +1,29 @@
+import Client from '../models/Client';
 import Destination from '../models/Destination';
 
 class DestinationService {
-  async getAllDestinations(filters: any = {}) {
+  async getAllDestinations(filters: any = {}, tenantId: number) {
     return await Destination.findAll({
-      where: filters
+      where: filters,
+      include: [
+        {
+            model: Client,
+            as: 'client',
+            where: {
+                tenantId: tenantId
+            },
+            attributes: []
+        }
+    ]
     });
   }
 
-  async getDestinationById(id: number) {
-    return await Destination.findByPk(id);
+  async getDestinationById(destinationId: number) {
+    return await Destination.findOne({
+      where: {
+        destinationId
+      }
+    });
   }
 
   async createDestination(destinationData: {

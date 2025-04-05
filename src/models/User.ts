@@ -16,6 +16,8 @@ interface UserAttributes {
     telephone: string;
     license: string;
     status: boolean;
+    createdBy?: string;
+    updatedBy?: string;
 }
 
 interface UserCreationAttributes extends Optional<UserAttributes, 'userId'> {}
@@ -32,12 +34,14 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
     public telephone!: string;
     public license!: string;
     public status!: boolean;
+    public createdBy?: string;
+    public updatedBy?: string;
 
     toJSON() {
         const values = Object.assign({}, this.get());
         delete values.password;
         return values;
-      }
+    }
 }
 
 User.init({
@@ -81,6 +85,14 @@ User.init({
     status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
+    },
+    createdBy: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    updatedBy: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 }, {
     sequelize,
@@ -92,6 +104,6 @@ User.init({
 
 User.belongsTo(Tenant, { as: 'tenant', foreignKey: 'tenantId' });
 User.belongsTo(Role, { as: 'role', foreignKey: 'roleId' });
-User.belongsTo(Truck, { as: 'truck',foreignKey: 'truckId' });
+User.belongsTo(Truck, { as: 'truck', foreignKey: 'truckId' });
 
 export default User;

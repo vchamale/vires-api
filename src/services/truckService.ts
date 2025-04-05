@@ -13,8 +13,14 @@ class TruckService {
     });
   }
 
-  async getTruckById(id: number) {
-    return await Truck.findByPk(id, { include: ['tenant', 'model'] });
+  async getTruckById(truckId: number, tenantId: number) {
+    return await Truck.findOne({ 
+      where: {
+        truckId,
+        tenantId
+      },
+      include: ['tenant', 'model'] 
+    });
   }
 
   async createTruck(truckData: {
