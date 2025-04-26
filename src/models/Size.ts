@@ -1,40 +1,46 @@
-import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize from '../config/database';
+import { DataTypes, Model, Optional } from "sequelize";
+import { sequelize } from "../config/database";
 
 interface SizeAttributes {
-    sizeId: number;
-    description: string;
-    feet: number;
+  sizeId: number;
+  description: string;
+  feet: number;
 }
 
-interface SizeCreationAttributes extends Optional<SizeAttributes, 'sizeId'> {}
+interface SizeCreationAttributes extends Optional<SizeAttributes, "sizeId"> {}
 
-class Size extends Model<SizeAttributes, SizeCreationAttributes> implements SizeAttributes {
-    public sizeId!: number;
-    public description!: string;
-    public feet!: number;
+class Size
+  extends Model<SizeAttributes, SizeCreationAttributes>
+  implements SizeAttributes
+{
+  public sizeId!: number;
+  public description!: string;
+  public feet!: number;
 }
 
-Size.init({
+Size.init(
+  {
     sizeId: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
     description: {
-        type: DataTypes.STRING(25),
-        allowNull: false
+      type: DataTypes.STRING(25),
+      allowNull: false,
     },
     feet: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    }
-}, {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+  },
+  {
     sequelize,
-    modelName: 'Size',
-    tableName: 'size',
+    modelName: "Size",
+    tableName: "size",
     underscored: true,
-    timestamps: false
-});
+    timestamps: false,
+  }
+);
 
 export default Size;

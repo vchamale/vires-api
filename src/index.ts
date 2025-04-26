@@ -1,8 +1,8 @@
 import express, { Application } from "express";
-import cors from 'cors';
+import cors from "cors";
 import dotenv from "dotenv";
-import cookieParser from 'cookie-parser';
-import sequelize from "./config/database";
+import cookieParser from "cookie-parser";
+import { sequelize } from "./config/database";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "./config/swagger";
 
@@ -31,12 +31,14 @@ const PORT = process.env.PORT || 3000;
 // Middleware to parse JSON
 app.use(express.json());
 
-app.use(cors({
-  origin: true, // Permitir cualquier origen (puedes especificar el dominio en producción)
-  credentials: true,  // Permitir envío de cookies
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',  // Métodos permitidos
-  allowedHeaders: 'Content-Type,Authorization' // Encabezados permitidos
-}));
+app.use(
+  cors({
+    origin: true, // Permitir cualquier origen (puedes especificar el dominio en producción)
+    credentials: true, // Permitir envío de cookies
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Métodos permitidos
+    allowedHeaders: "Content-Type,Authorization", // Encabezados permitidos
+  })
+);
 
 app.use(cookieParser());
 

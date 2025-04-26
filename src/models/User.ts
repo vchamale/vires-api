@@ -1,109 +1,115 @@
-import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize from '../config/database';
-import Tenant from './Tenant';
-import Role from './Role';
-import Truck from './Truck';
+import { DataTypes, Model, Optional } from "sequelize";
+import { sequelize } from "../config/database";
+import Tenant from "./Tenant";
+import Role from "./Role";
+import Truck from "./Truck";
 
 interface UserAttributes {
-    userId: number;
-    tenantId: number;
-    roleId: number;
-    truckId?: number;
-    email: string;
-    password?: string;
-    names: string;
-    lastNames: string;
-    telephone: string;
-    license: string;
-    status: boolean;
-    createdBy?: string;
-    updatedBy?: string;
+  userId: number;
+  tenantId: number;
+  roleId: number;
+  truckId?: number;
+  email: string;
+  password?: string;
+  names: string;
+  lastNames: string;
+  telephone: string;
+  license: string;
+  status: boolean;
+  createdBy?: string;
+  updatedBy?: string;
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, 'userId'> {}
+interface UserCreationAttributes extends Optional<UserAttributes, "userId"> {}
 
-class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
-    public userId!: number;
-    public tenantId!: number;
-    public roleId!: number;
-    public truckId?: number;
-    public email!: string;
-    public password?: string;
-    public names!: string;
-    public lastNames!: string;
-    public telephone!: string;
-    public license!: string;
-    public status!: boolean;
-    public createdBy?: string;
-    public updatedBy?: string;
+class User
+  extends Model<UserAttributes, UserCreationAttributes>
+  implements UserAttributes
+{
+  public userId!: number;
+  public tenantId!: number;
+  public roleId!: number;
+  public truckId?: number;
+  public email!: string;
+  public password?: string;
+  public names!: string;
+  public lastNames!: string;
+  public telephone!: string;
+  public license!: string;
+  public status!: boolean;
+  public createdBy?: string;
+  public updatedBy?: string;
 
-    toJSON() {
-        const values = Object.assign({}, this.get());
-        delete values.password;
-        return values;
-    }
+  toJSON() {
+    const values = Object.assign({}, this.get());
+    delete values.password;
+    return values;
+  }
 }
 
-User.init({
+User.init(
+  {
     userId: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
     tenantId: {
-        type: DataTypes.INTEGER,
-        references: { model: Tenant, key: 'tenantId' }
+      type: DataTypes.INTEGER,
+      references: { model: Tenant, key: "tenantId" },
     },
     roleId: {
-        type: DataTypes.INTEGER,
-        references: { model: Role, key: 'roleId' }
+      type: DataTypes.INTEGER,
+      references: { model: Role, key: "roleId" },
     },
     truckId: {
-        type: DataTypes.INTEGER,
-        references: { model: Truck, key: 'truckId' },
-        allowNull: true
+      type: DataTypes.INTEGER,
+      references: { model: Truck, key: "truckId" },
+      allowNull: true,
     },
     email: {
-        type: DataTypes.STRING(255),
-        allowNull: false,
-        unique: true
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      unique: true,
     },
     password: {
-        type: DataTypes.STRING(255),
-        allowNull: false
+      type: DataTypes.STRING(255),
+      allowNull: false,
     },
     names: {
-        type: DataTypes.STRING(50),
-        allowNull: false
+      type: DataTypes.STRING(50),
+      allowNull: false,
     },
     lastNames: {
-        type: DataTypes.STRING(50),
-        allowNull: false
+      type: DataTypes.STRING(50),
+      allowNull: false,
     },
     telephone: DataTypes.STRING(15),
     license: DataTypes.STRING(20),
     status: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
     },
     createdBy: {
-        type: DataTypes.STRING,
-        allowNull: true
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     updatedBy: {
-        type: DataTypes.STRING,
-        allowNull: true
-    }
-}, {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+  },
+  {
     sequelize,
-    modelName: 'User',
-    tableName: 'app_user',
+    modelName: "User",
+    tableName: "app_user",
     underscored: true,
-    timestamps: false
-});
+    timestamps: false,
+  }
+);
 
-User.belongsTo(Tenant, { as: 'tenant', foreignKey: 'tenantId' });
-User.belongsTo(Role, { as: 'role', foreignKey: 'roleId' });
-User.belongsTo(Truck, { as: 'truck', foreignKey: 'truckId' });
+User.belongsTo(Tenant, { as: "tenant", foreignKey: "tenantId" });
+User.belongsTo(Role, { as: "role", foreignKey: "roleId" });
+User.belongsTo(Truck, { as: "truck", foreignKey: "truckId" });
 
 export default User;

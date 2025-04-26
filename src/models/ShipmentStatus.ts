@@ -1,34 +1,41 @@
-import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize from '../config/database';
+import { DataTypes, Model, Optional } from "sequelize";
+import { sequelize } from "../config/database";
 
 interface ShipmentStatusAttributes {
-    shipmentStatusId: number;
-    description: string;
+  shipmentStatusId: number;
+  description: string;
 }
 
-interface ShipmentStatusCreationAttributes extends Optional<ShipmentStatusAttributes, 'shipmentStatusId'> {}
+interface ShipmentStatusCreationAttributes
+  extends Optional<ShipmentStatusAttributes, "shipmentStatusId"> {}
 
-class ShipmentStatus extends Model<ShipmentStatusAttributes, ShipmentStatusCreationAttributes> implements ShipmentStatusAttributes {
-    public shipmentStatusId!: number;
-    public description!: string;
+class ShipmentStatus
+  extends Model<ShipmentStatusAttributes, ShipmentStatusCreationAttributes>
+  implements ShipmentStatusAttributes
+{
+  public shipmentStatusId!: number;
+  public description!: string;
 }
 
-ShipmentStatus.init({
+ShipmentStatus.init(
+  {
     shipmentStatusId: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
     description: {
-        type: DataTypes.STRING(25),
-        allowNull: false
-    }
-}, {
+      type: DataTypes.STRING(25),
+      allowNull: false,
+    },
+  },
+  {
     sequelize,
-    modelName: 'ShipmentStatus',
-    tableName: 'shipment_status',
+    modelName: "ShipmentStatus",
+    tableName: "shipment_status",
     underscored: true,
-    timestamps: false
-});
+    timestamps: false,
+  }
+);
 
 export default ShipmentStatus;

@@ -1,34 +1,40 @@
-import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize from '../config/database';
+import { DataTypes, Model, Optional } from "sequelize";
+import { sequelize } from "../config/database";
 
 interface RoleAttributes {
-    roleId: number;
-    name: string;
+  roleId: number;
+  name: string;
 }
 
-interface RoleCreationAttributes extends Optional<RoleAttributes, 'roleId'> {}
+interface RoleCreationAttributes extends Optional<RoleAttributes, "roleId"> {}
 
-class Role extends Model<RoleAttributes, RoleCreationAttributes> implements RoleAttributes {
-    public roleId!: number;
-    public name!: string;
+class Role
+  extends Model<RoleAttributes, RoleCreationAttributes>
+  implements RoleAttributes
+{
+  public roleId!: number;
+  public name!: string;
 }
 
-Role.init({
+Role.init(
+  {
     roleId: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
     name: {
-        type: DataTypes.STRING(50),
-        allowNull: false
-    }
-}, {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
+  },
+  {
     sequelize,
-    modelName: 'Role',
-    tableName: 'role',
+    modelName: "Role",
+    tableName: "role",
     underscored: true,
-    timestamps: false
-});
+    timestamps: false,
+  }
+);
 
 export default Role;

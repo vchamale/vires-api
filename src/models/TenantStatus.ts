@@ -1,35 +1,41 @@
-import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize from '../config/database';
+import { DataTypes, Model, Optional } from "sequelize";
+import { sequelize } from "../config/database";
 
 interface TenantStatusAttributes {
-    tenantStatusId: number;
-    description: string;
+  tenantStatusId: number;
+  description: string;
 }
 
-interface TenantStatusCreationAttributes extends Optional<TenantStatusAttributes, 'tenantStatusId'> {}
+interface TenantStatusCreationAttributes
+  extends Optional<TenantStatusAttributes, "tenantStatusId"> {}
 
-class TenantStatus extends Model<TenantStatusAttributes, TenantStatusCreationAttributes>
-    implements TenantStatusAttributes {
-    public tenantStatusId!: number;
-    public description!: string;
+class TenantStatus
+  extends Model<TenantStatusAttributes, TenantStatusCreationAttributes>
+  implements TenantStatusAttributes
+{
+  public tenantStatusId!: number;
+  public description!: string;
 }
 
-TenantStatus.init({
+TenantStatus.init(
+  {
     tenantStatusId: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
     description: {
-        type: DataTypes.STRING(25),
-        allowNull: false
-    }
-}, {
+      type: DataTypes.STRING(25),
+      allowNull: false,
+    },
+  },
+  {
     sequelize,
-    modelName: 'TenantStatus',
-    tableName: 'tenant_status',
+    modelName: "TenantStatus",
+    tableName: "tenant_status",
     underscored: true,
-    timestamps: false
-});
+    timestamps: false,
+  }
+);
 
 export default TenantStatus;
