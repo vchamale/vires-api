@@ -37,14 +37,14 @@ class ShipmentService {
       `SELECT create_new_shipment(
         :tenantId, :originId, :destinationId, :containerId,
         :driverId, :truckId, :price, :weight,
-        :documentNumber, :notes, :currencyId, :atc
+        :documentNumber, :notes, :currencyId, :atcr
       ) `,
       {
         replacements: {
           tenantId,
           originId,
           destinationId,
-          containerId,
+          containerId: "TestContainer02",
           driverId,
           truckId,
           price,
