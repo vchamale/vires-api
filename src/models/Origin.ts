@@ -1,10 +1,10 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../config/database";
-import Tenant from "./Tenant";
+import Client from "./Client";
 
 interface OriginAttributes {
   originId: number;
-  tenantId: number;
+  clientId: number;
   name: string;
   address: string;
 }
@@ -17,7 +17,7 @@ class Origin
   implements OriginAttributes
 {
   public originId!: number;
-  public tenantId!: number;
+  public clientId!: number;
   public name!: string;
   public address!: string;
 }
@@ -29,9 +29,10 @@ Origin.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    tenantId: {
+    clientId: {
       type: DataTypes.INTEGER,
-      references: { model: Tenant, key: "tenantId" },
+      allowNull: false,
+      references: { model: Client, key: "clientId" },
     },
     name: {
       type: DataTypes.STRING(50),
@@ -51,6 +52,7 @@ Origin.init(
   }
 );
 
-Origin.belongsTo(Tenant, { as: "tenant", foreignKey: "tenantId" });
+Origin.belongsTo(Client, { as: "client", foreignKey: "clientId" });
+Client.hasMany(Origin, { as: "origins", foreignKey: "clientId" });
 
 export default Origin;

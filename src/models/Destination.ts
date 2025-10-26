@@ -31,6 +31,7 @@ Destination.init(
     },
     clientId: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       references: { model: Client, key: "clientId" },
     },
     name: {
@@ -52,5 +53,6 @@ Destination.init(
 );
 
 Destination.belongsTo(Client, { as: "client", foreignKey: "clientId" });
+Client.hasMany(Destination, { as: "destinations", foreignKey: "clientId" });
 
 export default Destination;
