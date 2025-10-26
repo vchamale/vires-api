@@ -7,17 +7,17 @@ class OriginService {
     });
   }
 
-  async getOriginById(originId: number, tenantId: number) {
+  async getOriginById(originId: number, clientId: number) {
     return await Origin.findOne({
       where: {
         originId,
-        tenantId
+        clientId
       }
     });
   }
 
   async createOrigin(originData: {
-    tenantId: number;
+    clientId: number;
     name: string;
     address: string;
   }) {
@@ -25,7 +25,7 @@ class OriginService {
   }
 
   async updateOrigin(id: number, originData: Partial<{
-    tenantId: number;
+    clientId: number;
     name: string;
     address: string;
   }>) {
