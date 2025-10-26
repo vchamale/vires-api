@@ -12,4 +12,11 @@ router.post('/', authMiddleware, modifyRequestMiddleware({}), OriginController.c
 router.put('/:id', authMiddleware, modifyRequestMiddleware({}), OriginController.updateOrigin);
 router.delete('/:id', authMiddleware, modifyRequestMiddleware({}), OriginController.deleteOrigin);
 
+router.get(
+  '/client/:clientId',
+  authMiddleware,
+  modifyRequestMiddleware({}),
+  OriginController.getOriginsByClientId
+);
+
 export default router;

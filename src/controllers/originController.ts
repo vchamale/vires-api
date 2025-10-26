@@ -86,6 +86,39 @@ class OriginController {
       res.status(500).json({ message: error.message });
     }
   }
+
+  async getOriginsByClientId(req: Request, res: Response) {
+    try {
+      const { tenantId, search } = req.query;
+      const { clientId } = req.params;
+
+      if (!tenantId) {
+        return res.status(400).json({ message: 'Tenant ID is required' });
+      }
+      if (!clientId) {
+        return res.status(400).json({ message: 'Client ID is required' });
+      }
+
+      // filtros base
+      const filters: any = {
+        clientId: +clientId,
+      };
+
+      // búsqueda opcional (name/address)
+      // if (search) {
+      //   filters[Op.or] = [
+      //     where(fn('LOWER', col('name')), { [Op.like]: fn('LOWER', `%${search}%`) }),
+      //     where(fn('LOWER', col('address')), { [Op.like]: fn('LOWER', `%${search}%`) }),
+      //   ];
+      // }
+
+      const origins = await OriginService.getOriginsByClientId(+clientId);
+      return res.status(200).json(origins);
+    } catch (error: any) {
+      console.error('Error fetching origins by clientId:', error);
+      return res.status(500).json({ message: error.message });
+    }
+  }
 }
 
 export default new OriginController();

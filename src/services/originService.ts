@@ -1,4 +1,7 @@
+import { col, fn, where } from 'sequelize';
 import Origin from '../models/Origin';
+import { Op } from 'sequelize';
+import Client from '@models/Client';
 
 class OriginService {
   async getAllOrigin(filters: any = {}) {
@@ -21,6 +24,7 @@ class OriginService {
     name: string;
     address: string;
   }) {
+    console.log('asdasdsa ', originData)
     return await Origin.create(originData);
   }
 
@@ -42,6 +46,22 @@ class OriginService {
       throw new Error('Origin not found');
     }
     return await origin.destroy();
+  }
+
+  async getOriginsByClientId(clientId: number, search?: string) {
+    const whereClause: any = { clientId };
+
+    if (search && search.trim().length > 0) {
+      whereClause[Op.or] = [
+        where(fn('LOWER', col('name')), { [Op.like]: fn('LOWER', `%${search}%`) }),
+        where(fn('LOWER', col('address')), { [Op.like]: fn('LOWER', `%${search}%`) }),
+      ];
+    }
+
+    return await Origin.findAll({
+      where: whereClause,
+      order: [['name', 'ASC']],
+    });
   }
 }
 

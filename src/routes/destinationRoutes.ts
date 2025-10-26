@@ -11,4 +11,11 @@ router.post('/', authMiddleware, modifyRequestMiddleware({}), destinationControl
 router.put('/:id', authMiddleware, modifyRequestMiddleware({}), destinationController.updateDestination);
 router.delete('/:id', authMiddleware, modifyRequestMiddleware({}), destinationController.deleteDestination);
 
+router.get(
+  '/client/:clientId',
+  authMiddleware,
+  modifyRequestMiddleware({}),
+  destinationController.getDestinationsByClientId
+);
+
 export default router;

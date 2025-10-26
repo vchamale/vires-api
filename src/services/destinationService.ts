@@ -1,3 +1,4 @@
+import { col, fn, Op, where } from 'sequelize';
 import Client from '../models/Client';
 import Destination from '../models/Destination';
 
@@ -52,6 +53,22 @@ class DestinationService {
       throw new Error('Destination not found');
     }
     return await destination.destroy();
+  }
+
+  async getDestinationsByClientId(clientId: number, search?: string) {
+    const whereClause: any = { clientId };
+
+    if (search && search.trim()) {
+      whereClause[Op.or] = [
+        where(fn('LOWER', col('name')), { [Op.like]: fn('LOWER', `%${search}%`) }),
+        where(fn('LOWER', col('address')), { [Op.like]: fn('LOWER', `%${search}%`) }),
+      ];
+    }
+
+    return await Destination.findAll({
+      where: whereClause,
+      order: [['name', 'ASC']],
+    });
   }
 }
 
