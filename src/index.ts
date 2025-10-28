@@ -22,6 +22,7 @@ import makeRoutes from "./routes/makeRoutes";
 import modelRoutes from "./routes/truckModelRoutes";
 import currencyRoutes from "./routes/currencyRoutes";
 import containerRoutes from "./routes/containerRoutes";
+import sizesRoutes from "./routes/sizeRoutes";
 
 dotenv.config();
 
@@ -61,6 +62,7 @@ app.use("/api/make", makeRoutes);
 app.use("/api/model", modelRoutes);
 app.use("/api/currencies", currencyRoutes);
 app.use("/api/containers", containerRoutes);
+app.use("/api/sizes", sizesRoutes);
 
 // Server initialization
 sequelize.sync({ force: false }).then(() => {

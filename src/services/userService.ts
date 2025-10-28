@@ -52,6 +52,19 @@ class UserService {
             { model: Truck, as: 'truck' }
         ] });
     }
+
+    async getAllDrivers(tenantId: number) {
+        return await User.findAll({ 
+            where: {
+                tenantId,
+                roleId: 3
+            },
+            attributes: { exclude: ['password'] },
+            include: [
+            { model: Tenant, as: 'tenant' },
+            { model: Truck, as: 'truck' }
+        ] });
+    }
 }
 
 export default new UserService();

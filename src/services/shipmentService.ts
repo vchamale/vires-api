@@ -18,11 +18,13 @@ class ShipmentService {
   async create(shipmentData: any) {
     const {
       tenantId,
+      clientId,
       originId,
       destinationId,
-      containerId,
+      container: containerNumber,
       driverId,
       truckId,
+      sizeId: containerSizeId,
       price,
       weight,
       documentNumber = null,
@@ -35,16 +37,30 @@ class ShipmentService {
 
     const result = await sequelize.query(
       `SELECT create_new_shipment(
-        :tenantId, :originId, :destinationId, :containerId,
-        :driverId, :truckId, :price, :weight,
-        :documentNumber, :notes, :currencyId, :atc
+        :tenantId,
+        :clientId,
+        :originId,
+        :destinationId,
+        :containerNumber,
+        :containerSizeId,
+        :driverId,
+        :truckId,
+        :price,
+        :weight,
+        :documentNumber,
+        :notes,
+        :currencyId,
+        :atc
+
       ) `,
       {
         replacements: {
           tenantId,
+          clientId,
           originId,
           destinationId,
-          containerId,
+          containerNumber,
+          containerSizeId,
           driverId,
           truckId,
           price,
@@ -53,6 +69,7 @@ class ShipmentService {
           notes,
           currencyId,
           atc,
+
         },
         type: QueryTypes.SELECT,
       }
@@ -111,11 +128,6 @@ class ShipmentService {
         { model: Destination, as: "destination" },
         { model: Container, as: "container" },
         { model: Document, as: "document" },
-        {
-          model: User,
-          as: "user",
-          attributes: { exclude: ["password"] },
-        },
         { model: Truck, as: "truck" },
       ],
     });

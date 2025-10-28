@@ -78,20 +78,20 @@ class DocumentController {
             if (documentNumber) {
                 filters.documentNumber = { [Op.like]: `%${documentNumber}%` };
             }
-            if (startDate || endDate) {
-                filters.createdAt = {};
-                if (startDate) {
-                    // Convertimos startDate a T00:00:00.000Z
-                    const start = startOfDay(parseISO(startDate as string));
-                    filters.createdAt[Op.gte] = start;
-                }
+            // if (startDate || endDate) {
+            //     filters.createdAt = {};
+            //     if (startDate) {
+            //         // Convertimos startDate a T00:00:00.000Z
+            //         const start = startOfDay(parseISO(startDate as string));
+            //         filters.createdAt[Op.gte] = start;
+            //     }
 
-                if (endDate) {
-                    // Convertimos endDate a T23:59:59.999Z
-                    const end = endOfDay(parseISO(endDate as string));
-                    filters.createdAt[Op.lte] = end;
-                }
-            }
+            //     if (endDate) {
+            //         // Convertimos endDate a T23:59:59.999Z
+            //         const end = endOfDay(parseISO(endDate as string));
+            //         filters.createdAt[Op.lte] = end;
+            //     }
+            // }
 
             filters.tenantId = tenantId;
             const documents = await DocumentService.getAll(filters);

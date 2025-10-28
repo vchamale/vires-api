@@ -114,6 +114,19 @@ class UserController {
       return res.status(500).json({ message: error.message });
     }
   }
+
+  async getAllDrivers(req: Request, res: Response) {
+    try {
+      const { tenantId } = req.query;
+      if (!tenantId) {
+        return res.status(400).json({ message: "Tenant ID is required" });
+      }
+      const users = await UserService.getAllDrivers(+tenantId);
+      return res.status(200).json(users);
+    } catch (error: any) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
 }
 
 export default new UserController();

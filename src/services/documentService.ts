@@ -1,6 +1,5 @@
-import { Op } from 'sequelize';
 import Document from '../models/Document';
-import Tenant from '../models/Tenant';
+import Client from '@models/Client';
 
 class DocumentService {
     async create(documentData: any) {
@@ -8,14 +7,14 @@ class DocumentService {
         return newDocument;
     }
 
-    async getById(documentId: number, tenantId: number) {
+    async getById(documentId: number, clientId: number) {
         return await Document.findOne({
             where: {
                 documentId,
-                tenantId
+                clientId
             },
             include: [
-                { model: Tenant, as: 'tenant' }
+                { model: Client, as: 'client' }
             ]
         });
     }
@@ -41,7 +40,7 @@ class DocumentService {
         return await Document.findAll({
             where: filters,
             include: [
-                { model: Tenant, as: 'tenant' }
+                { model: Client, as: 'client' }
             ]
         });
     }

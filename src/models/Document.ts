@@ -1,21 +1,17 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../config/database";
-import Tenant from "./Tenant";
+import Client from "./Client";
 
 interface DocumentAttributes {
   documentId: number;
-  tenantId: number;
+  clientId: number;
   documentNumber: string;
-  createdAt: Date;
-  updatedAt: Date;
-  createdBy?: number;
-  updatedBy?: number;
 }
 
 interface DocumentCreationAttributes
   extends Optional<
     DocumentAttributes,
-    "documentId" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy"
+    "documentId" | "clientId" | "documentNumber"
   > {}
 
 class Document
@@ -23,12 +19,8 @@ class Document
   implements DocumentAttributes
 {
   public documentId!: number;
-  public tenantId!: number;
+  public clientId!: number;
   public documentNumber!: string;
-  public createdAt!: Date;
-  public updatedAt!: Date;
-  public createdBy?: number;
-  public updatedBy?: number;
 }
 
 Document.init(
@@ -38,44 +30,18 @@ Document.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    tenantId: {
+    clientId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: Tenant,
-        key: "tenantId",
+        model: Client,
+        key: "clientId",
       },
     },
     documentNumber: {
       type: DataTypes.STRING(25),
       allowNull: false,
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
-    createdBy: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "app_user",
-        key: "user_id",
-      },
-      allowNull: true,
-    },
-    updatedBy: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "app_user",
-        key: "user_id",
-      },
-      allowNull: true,
-    },
+    }
   },
   {
     sequelize,
@@ -83,11 +49,9 @@ Document.init(
     tableName: "document",
     underscored: true,
     timestamps: true,
-    createdAt: "created_at",
-    updatedAt: "updated_at",
   }
 );
 
-Document.belongsTo(Tenant, { as: "tenant", foreignKey: "tenantId" });
+Document.belongsTo(Client, { as: "client", foreignKey: "clientId" });
 
 export default Document;
