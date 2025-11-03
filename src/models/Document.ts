@@ -48,7 +48,7 @@ Document.init(
     modelName: "Document",
     tableName: "document",
     underscored: true,
-    timestamps: true,
+    timestamps: false,
   }
 );
 
