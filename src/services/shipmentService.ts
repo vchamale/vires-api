@@ -108,7 +108,14 @@ class ShipmentService {
     if (!shipment) {
       return null;
     }
-    return await shipment.update(updateData);
+
+    const { weight, price, containerNumber, shipmentStatus: shipmentStatusId,
+      origin: originId, destination: destinationId, truck: truckId, driver: driverId, ...rest
+     } = updateData
+
+    return await shipment.update({
+      weight, price, containerNumber, shipmentStatusId, driverId, originId, destinationId, truckId, ...rest
+    });
   }
 
   async delete(shipmentId: number, tenantId: number) {

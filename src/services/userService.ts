@@ -44,7 +44,8 @@ class UserService {
     async getAll(tenantId: number) {
         return await User.findAll({ 
             where: {
-                tenantId
+                tenantId,
+                roleId: 3
             },
             attributes: { exclude: ['password'] },
             include: [

@@ -309,7 +309,7 @@ Shipment.belongsTo(Origin,         { as: "origin",          foreignKey: "originI
 Shipment.belongsTo(Destination,    { as: "destination",     foreignKey: "destinationId" });
 Shipment.belongsTo(Container,      { as: "container",       foreignKey: "containerId" });
 Shipment.belongsTo(Document,       { as: "document",        foreignKey: "documentId" });
-Shipment.belongsTo(User,           { as: "driver",          foreignKey: "driverId" });
+Shipment.belongsTo(User,           { as: "user",            foreignKey: "driverId" });
 Shipment.belongsTo(Truck,          { as: "truck",           foreignKey: "truckId" });
 Shipment.belongsTo(Client,         { as: "client",          foreignKey: "clientId" });
 Shipment.belongsTo(Currency,       { as: "currency",        foreignKey: "currencyId" });

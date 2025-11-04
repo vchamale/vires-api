@@ -9,20 +9,29 @@ class OriginController {
       if (!tenantId) {
           return res.status(400).json({ message: 'Tenant ID is required' });
       }
-      const { search } = req.query;
+
+      const { search, clientId } = req.query;
       const filters: any = {};
+
+      if (search || clientId) {
+      const lowerSearch = `%${String(search).toLowerCase()}%`;
+
+      filters[Op.and] = [];
+
       if (search) {
-        filters[Op.or] = [
-          where(fn('LOWER', col('name')), {
-            [Op.like]: fn('LOWER',`%${search}%`),
-          }),
-          where(fn('LOWER', col('address')), {
-            [Op.like]: fn('LOWER',`%${search}%`),
-          }),
-        ];
+        filters[Op.and].push({
+          [Op.or]: [
+            where(fn('LOWER', col('name')), { [Op.like]: lowerSearch }),
+            where(fn('LOWER', col('address')), { [Op.like]: lowerSearch })
+          ],
+        });
       }
 
-      filters.tenantId = tenantId;
+      if (clientId) {
+        filters[Op.and].push({ client_id: clientId });
+      }
+    }
+
       const origins = await OriginService.getAllOrigin(filters);
 
       res.status(200).json(origins);

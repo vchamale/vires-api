@@ -6,7 +6,7 @@ import { Op } from 'sequelize';
 class DestinationController {
   async getAllDestinations(req: Request, res: Response) {
     try {
-      const { tenantId, search } = req.query;
+      const { tenantId, search, clientId } = req.query;
       if (!tenantId) {
           return res.status(400).json({ message: 'Tenant ID is required' });
       }
@@ -21,6 +21,12 @@ class DestinationController {
             [Op.like]: fn('LOWER',`%${search}%`),
           }),
         ];
+      }
+
+      filters[Op.and] = [];
+
+      if (clientId) {
+        filters[Op.and].push({ client_id: clientId });
       }
 
       const destinations = await destinationService.getAllDestinations(filters, +tenantId);
