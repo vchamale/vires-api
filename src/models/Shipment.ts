@@ -313,5 +313,7 @@ Shipment.belongsTo(User,           { as: "user",            foreignKey: "driverI
 Shipment.belongsTo(Truck,          { as: "truck",           foreignKey: "truckId" });
 Shipment.belongsTo(Client,         { as: "client",          foreignKey: "clientId" });
 Shipment.belongsTo(Currency,       { as: "currency",        foreignKey: "currencyId" });
+Shipment.belongsTo(User, { as: "driver", foreignKey: "driverId" });
+
 
 export default Shipment;

@@ -8,12 +8,9 @@ import Container from "../models/Container";
 import Truck from "../models/Truck";
 import Document from "../models/Document";
 import { sequelize, QueryTypes } from "../config/database";
+import Client from "@models/Client";
 
 class ShipmentService {
-  // async create(shipmentData: any) {
-  //   const newShipment = await Shipment.create(shipmentData);
-  //   return newShipment;
-  // }
 
   async create(shipmentData: any) {
     const {
@@ -32,8 +29,6 @@ class ShipmentService {
       currencyId = 1,
       atc = null,
     } = shipmentData;
-
-    console.log(">>>>> this is shipmentdata", shipmentData);
 
     const result = await sequelize.query(
       `SELECT create_new_shipment(
@@ -75,7 +70,6 @@ class ShipmentService {
       }
     );
 
-    // El resultado es un array con un objeto: [{ shipment_id: 123 }]
     return result[0];
   }
 
@@ -136,6 +130,8 @@ class ShipmentService {
         { model: Container, as: "container" },
         { model: Document, as: "document" },
         { model: Truck, as: "truck" },
+        { model: Client, as: "client", attributes: ["name"] },
+        { model: User, as: "driver", attributes: ["names", "last_names"] },
       ],
     });
   }
