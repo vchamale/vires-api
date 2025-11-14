@@ -14,6 +14,7 @@ const modifyRequestMiddleware =
 
     if (req.tenantId) {
       append.tenantId = req.tenantId;
+      append.userId = req.userId;
     }
 
     console.log('append ', append)
