@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy vires api app
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{secrets.SSH_HOST}}
           port: ${{secrets.SSH_PORT}}
@@ -17,7 +17,7 @@ jobs:
           username: ${{secrets.SSH_USERNAME}}
           script: |
             if [ ! -d "vires-api" ]; then
-              git clone https://github.com/vchamale/vires-api.git
+              git clone git@github.com:vchamale/vires-api.githttps://github.com/vchamale/vires-api.git
             else
               cd vires-api
               git pull origin main
