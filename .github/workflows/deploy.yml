@@ -8,36 +8,21 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Validate SSH key format
-        run: |
-          echo "${{ secrets.SSH_KEY }}" > key
-          chmod 600 key
-          ssh-keygen -lf key
-
-      - name: Deploy to Droplet
-        uses: appleboy/ssh-action@v1.0.0
+      - name: Deploy vires api app
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{secrets.SSH_HOST}}
           port: ${{secrets.SSH_PORT}}
           key: ${{secrets.SSH_KEY}}
           username: ${{secrets.SSH_USERNAME}}
           script: |
-            echo "🔄 Starting deployment script..."
-
-            # Si la carpeta NO existe, clonamos por HTTPS
             if [ ! -d "vires-api" ]; then
-              git clone https://github.com/vchamale/vires-api.git
+              git clone git@github.com:vchamale/vires-api.git
             else
               cd vires-api
               git pull origin main
             fi
 
-            # Volver a la raíz si recién se clonó
-            cd vires-api
-
-            # Crear archivo .env
             cat <<EOF > .env
             PG_USER=${{secrets.PG_USER}}
             PG_HOST=${{secrets.PG_HOST}}
