@@ -1,39 +1,64 @@
-name: Build & Deploy
+name: Deploy to DigitalOcean
 
 on:
   push:
-    branches: [main]
+    branches: ["main"]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Deploy vires api app
-        uses: appleboy/ssh-action@v1.0.3
+      # 1. Check out repo via HTTPS using GITHUB_TOKEN (seguro)
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Prueba y registra la clave (opcional pero recomendado)
+      - name: Validate SSH key format
+        run: |
+          echo "${{ secrets.SSH_KEY }}" > key
+          chmod 600 key
+          ssh-keygen -lf key
+
+      # 3. Conectar al Droplet y ejecutar script
+      - name: Deploy to Droplet
+        uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{secrets.SSH_HOST}}
-          port: ${{secrets.SSH_PORT}}
-          key: ${{secrets.SSH_KEY}}
-          username: ${{secrets.SSH_USERNAME}}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
+            echo "🔄 Starting deployment script..."
+
+            # Si la carpeta NO existe, clonamos por HTTPS
             if [ ! -d "vires-api" ]; then
-              git clone git@github.com:vchamale/vires-api.git
+              git clone https://github.com/vchamale/vires-api.git
             else
               cd vires-api
               git pull origin main
             fi
 
-            cat <<EOF > .env
-            PG_USER=${{secrets.PG_USER}}
-            PG_HOST=${{secrets.PG_HOST}}
-            PG_DATABASE=${{secrets.PG_DATABASE}}
-            PG_PASSWORD=${{secrets.PG_PASSWORD}}
-            PG_PORT=${{secrets.PG_PORT}}
-            JWT_SECRET=${{secrets.JWT_SECRET}}
-            EOF
-            
-            npm i
+            # Volver a la raíz si recién se clonó
+            cd vires-api
 
+            # Crear archivo .env
+            cat <<EOF > .env
+            PG_USER=${{ secrets.PG_USER }}
+            PG_HOST=${{ secrets.PG_HOST }}
+            PG_DATABASE=${{ secrets.PG_DATABASE }}
+            PG_PASSWORD=${{ secrets.PG_PASSWORD }}
+            PG_PORT=${{ secrets.PG_PORT }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            EOF
+
+            # Instalar dependencias
+            npm install
+
+            # Compilar
             npm run rebuild:pro
 
-            echo 'Deployment successful to digital ocean'
+            # (Opcional) Restart PM2, Docker, etc.
+            # pm2 restart all
+
+            echo "🎉 Deployment successful!"
