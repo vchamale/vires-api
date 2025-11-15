@@ -17,7 +17,7 @@ jobs:
           username: ${{secrets.SSH_USERNAME}}
           script: |
             if [ ! -d "vires-api" ]; then
-              git clone git@github.com:vchamale/vires-api.git
+              git clone https://github.com/vchamale/vires-api.git
             else
               cd vires-api
               git pull origin main
