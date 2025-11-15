@@ -96,11 +96,13 @@ class ShipmentController {
             }
             if (startDate || endDate || driverId || clientId || stateId) {
                 if (startDate) {
+                    filters.dateCreated = {}
                     const start = startOfDay(parseISO(startDate as string));
                     filters.dateCreated[Op.gte] = start;
                 }
 
                 if (endDate) {
+                    filters.dateCreated = {}
                     const end = endOfDay(parseISO(endDate as string));
                     filters.dateCreated[Op.lte] = end;
                 }
