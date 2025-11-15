@@ -95,7 +95,6 @@ class ShipmentController {
                 ];
             }
             if (startDate || endDate || driverId || clientId || stateId) {
-                filters.dateCreated = {};
                 if (startDate) {
                     const start = startOfDay(parseISO(startDate as string));
                     filters.dateCreated[Op.gte] = start;
@@ -117,6 +116,8 @@ class ShipmentController {
             }
 
             filters.tenantId = tenantId;
+
+            console.log('filters ====== ', filters)
 
             const shipments = await ShipmentService.getAll(filters);
             return res.status(200).json(shipments);
