@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node -r tsconfig-paths/register dist/index.js",
+    "start": "node dist/index.js",
     "dev": "nodemon --exec ts-node -r tsconfig-paths/register --files src/index.ts",
-    "build": "tsc",
+    "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
     "build:pro": "docker build -t vires-api . && docker run -d -p 3000:3000 --name vires-api vires-api && docker update --restart unless-stopped $(docker ps -aqf name=^vires-api$)",
-    "rebuild:pro": "if [ \"$(docker ps -aqf name=^vires-api$)\" ]; then docker stop $(docker ps -aqf name=^vires-api$) && docker rm $(docker ps -aqf name=^vires-api$); fi && docker rmi vires-api -f && docker build -t vires-api . && docker run -p 3000:3000 -d --name vires-api vires-api && docker update --restart unless-stopped $(docker ps -aqf name=^vires-api$)"
+"rebuild:pro": "if [ \"$(docker ps -aqf name=^vires-api$)\" ]; then docker stop $(docker ps -aqf name=^vires-api$) && docker rm $(docker ps -aqf name=^vires-api$); fi && docker rmi vires-api -f && docker build -t vires-api . && docker run -p 3000:3000 -d --name vires-api vires-api && docker update --restart unless-stopped $(docker ps -aqf name=^vires-api$)"
   },
   "keywords": [],
   "author": "",
@@ -41,6 +41,7 @@
     "eslint": "9.10.0",
     "nodemon": "3.1.4",
     "ts-node": "10.9.2",
+    "tsc-alias": "^1.8.16",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.6.2"
   }
