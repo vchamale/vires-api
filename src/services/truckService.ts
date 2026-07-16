@@ -1,3 +1,4 @@
+import Make from '../models/Make';
 import TruckModel from '../models/Model';
 import Tenant from '../models/Tenant';
 import Truck from '../models/Truck';
@@ -8,7 +9,11 @@ class TruckService {
         where: filters,
         include: [
           { model: Tenant, as: 'tenant' },
-          { model: TruckModel, as: 'model' }
+          {
+            model: TruckModel,
+            as: 'model',
+            include: [{ model: Make, as: 'make' }]
+          }
       ]
     });
   }
@@ -19,7 +24,14 @@ class TruckService {
         truckId,
         tenantId
       },
-      include: ['tenant', 'model'] 
+      include: [
+        { model: Tenant, as: 'tenant' },
+        {
+          model: TruckModel,
+          as: 'model',
+          include: [{ model: Make, as: 'make' }]
+        }
+      ]
     });
   }
 

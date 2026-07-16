@@ -5,6 +5,10 @@ import cookieParser from "cookie-parser";
 import { sequelize } from "./config/database";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "./config/swagger";
+import { createLogger } from "./config/logger";
+import { loggerMiddleware, errorLoggerMiddleware } from "./middlewares/logger";
+
+const log = createLogger("server");
 
 // Routes
 import healthRoutes from "./routes/healthRoutes";
@@ -28,6 +32,9 @@ dotenv.config();
 
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
+
+// HTTP access logging (registra cada request al finalizar).
+app.use(loggerMiddleware);
 
 // Middleware to parse JSON
 app.use(express.json());
@@ -64,10 +71,44 @@ app.use("/api/currencies", currencyRoutes);
 app.use("/api/containers", containerRoutes);
 app.use("/api/sizes", sizesRoutes);
 
+// Manejador centralizado de errores (debe ir después de todas las rutas).
+app.use(errorLoggerMiddleware);
+
 // Server initialization
-sequelize.sync({ force: false }).then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+// La DB ya viene migrada completa desde Supabase (tablas, funciones, triggers).
+// Solo verificamos la conexión; no usamos sync() para no divergir del schema real.
+sequelize.authenticate().then(() => {
+  log.info("Successful database connection.", { context: "bootstrap" });
+  const server = app.listen(PORT, () => {
+    log.info(`Server running on http://localhost:${PORT}`, {
+      context: "bootstrap",
+      port: PORT,
+    });
+  });
+
+  // Cierre limpio: libera el puerto y cierra la conexión a la DB
+  // antes de que el proceso termine (evita procesos zombie con nodemon).
+  const shutdown = (signal: string) => {
+    log.warn(`${signal} received. Shutting down gracefully...`, {
+      context: "shutdown",
+      signal,
+    });
+    server.close(() => {
+      sequelize.close().finally(() => {
+        log.info("Server and database connections closed.", {
+          context: "shutdown",
+        });
+        process.exit(0);
+      });
+    });
+  };
+
+  process.on("SIGINT", () => shutdown("SIGINT"));
+  process.on("SIGTERM", () => shutdown("SIGTERM"));
+}).catch((error) => {
+  log.error("Unable to connect to the database", {
+    context: "bootstrap",
+    error,
   });
 });
 
